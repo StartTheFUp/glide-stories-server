@@ -1,0 +1,21 @@
+{
+  "name": "websips-server",
+  "version": "1.0.0",
+  "description": "server for websips",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:js": "standard | snazzy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:startthefup/websips-group/websips-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "snazzy": "^7.1.1",
+    "standard": "^11.0.1"
+  }
+}
