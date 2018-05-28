@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint:js": "standard | snazzy"
+    "lint:js": "standard | snazzy",
+    "start": "nodemon server"
   },
   "repository": {
     "type": "git",
