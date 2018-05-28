@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test": "echo 'no test specified'",
-    "lint:js": "standard | snazzy",
+    "lint": "standard | snazzy",
     "start": "nodemon src"
   },
   "repository": {
@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "nodemon": "^1.17.5",
     "snazzy": "^7.1.1",
     "standard": "^11.0.1"
   }
