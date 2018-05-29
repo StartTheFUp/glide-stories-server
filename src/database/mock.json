@@ -3,33 +3,35 @@
     "id": 1,
     "type": "intro",
     "title": "This is a title",
+    "text": "Art review: Life in Motion — Egon Schiele and Francesca Woodman, Tate Liverpool",
     "image": "https://i.ytimg.com/vi/gJGJ1WXE0HE/maxresdefault.jpg"
   },
   {
     "id": 2,
     "type": "text",
-    "text": "Res omnis autem ipsa quod inter societate ita contracta omnis."
+    "text": "Of all the galleries in the Tate empire, the one that seems most comfortable in its own skin is Tate Liverpool."
   },
   {
     "id": 3,
     "type": "textImage",
-    "text": "Res omnis autem ipsa quod inter societate ita contracta omnis.",
+    "text": "The rest are an increasingly dysfunctional bunch. Poor Tate Britain appears psychologically incapable of doing what it was set up to do — to celebrate British art — and yearns, desperately, to be Tate Modern.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
   },
   {
     "id": 4,
     "type": "text",
-    "text": "blabla bla blabla blabla"
+    "text": "Tate Modern itself, meanwhile, has grown so unfeasibly huge, it is now a place you go for the foyers, not for the art."
   },
   {
     "id": 5,
     "type": "textImage",
-    "text": "pouet",
+    "text": "As for Tate St Ives, there has never been a pressing reason for it to exist, and its fate, alas, is to fiddle away at the margins of art, being ignored. Tate Liverpool, however, goes from strength to strength. Everything works here. The Merseyside location is…",
     "image": "ttps://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
   },
   {
     "id": 6,
     "type": "text",
-    "text": "Res omnis autem ipsa quod inter societate ita contracta omnis."
+    "text": "Last Slide"
   }
 ]
+
