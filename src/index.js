@@ -17,4 +17,3 @@ app.get('/mock', (req, res) => {
 })
 
 app.listen(5000, () => console.log('Port 5000'))
-
