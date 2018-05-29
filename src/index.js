@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/mock', (req, res) => {
-  res.json(JSON.stringify(sip))
+  res.json(sip)
 })
 
 app.listen(5000, () => console.log('Port 5000'))
