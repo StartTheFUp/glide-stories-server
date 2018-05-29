@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "type": "intro",
+    "title": "This is a title",
+    "image": "https://i.ytimg.com/vi/gJGJ1WXE0HE/maxresdefault.jpg"
+  },
+  {
+    "id": 2,
+    "type": "text",
+    "text": "Res omnis autem ipsa quod inter societate ita contracta omnis."
+  },
+  {
+    "id": 3,
+    "type": "textImage",
+    "text": "Res omnis autem ipsa quod inter societate ita contracta omnis.",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
+  },
+  {
+    "id": 4,
+    "type": "text",
+    "text": "blabla bla blabla blabla"
+  },
+  {
+    "id": 5,
+    "type": "textImage",
+    "text": "pouet",
+    "image": "ttps://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
+  },
+  {
+    "id": 6,
+    "type": "text",
+    "text": "Res omnis autem ipsa quod inter societate ita contracta omnis."
+  }
+]
