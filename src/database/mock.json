@@ -2,9 +2,9 @@
   {
     "id": 1,
     "type": "intro",
-    "title": "This is a title",
-    "text": "Art review: Life in Motion — Egon Schiele and Francesca Woodman, Tate Liverpool",
-    "image": "https://i.ytimg.com/vi/gJGJ1WXE0HE/maxresdefault.jpg"
+    "title": "Art review",
+    "subTitle": "Life in Motion — Egon Schiele and Francesca Woodman, Tate Liverpool",
+    "image": "http://cosmetotheque.com/wp-content/uploads/2018/04/mario-gogh-589733-unsplash-1200x385.jpg"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
   },
   {
     "id": 3,
-    "type": "textImage",
+    "type": "imageText",
     "text": "The rest are an increasingly dysfunctional bunch. Poor Tate Britain appears psychologically incapable of doing what it was set up to do — to celebrate British art — and yearns, desperately, to be Tate Modern.",
     "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
   },
@@ -24,9 +24,9 @@
   },
   {
     "id": 5,
-    "type": "textImage",
+    "type": "imageText",
     "text": "As for Tate St Ives, there has never been a pressing reason for it to exist, and its fate, alas, is to fiddle away at the margins of art, being ignored. Tate Liverpool, however, goes from strength to strength. Everything works here. The Merseyside location is…",
-    "image": "ttps://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
+    "image": "https://upload.wikimedia.org/wikipedia/commons/3/36/Hopetoun_falls.jpg"
   },
   {
     "id": 6,
