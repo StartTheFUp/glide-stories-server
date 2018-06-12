@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const sip = require('./database/mock.json')
+const Twitter = require('twitter-node-client').Twitter
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin)
