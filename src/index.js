@@ -6,6 +6,13 @@ const config = require('./data/twitter_config.js')
 const Twitter = require('twitter-node-client').Twitter
 const twitter = new Twitter(config)
 
+const getTweet = id => new Promise((success, fail) => {
+  twitter.getTweet({ id }, fail, success)
+})
+
+getTweet('1006522254727892992')
+  .then(console.log)
+  .catch(console.error)
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin)
