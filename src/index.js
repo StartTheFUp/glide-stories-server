@@ -27,7 +27,7 @@ app.get('/tweet', (req, res) => {
     .then(tweet => {
       const newTweet = {
         publication_date: tweet.created_at,
-        article_url: "", // put the link send by the user
+        article_url: '', // put the link send by the user
         author_picture: tweet.user.profile_image_url_https,
         author_name: tweet.user.name,
         author_screen_name: tweet.user.screen_name,
