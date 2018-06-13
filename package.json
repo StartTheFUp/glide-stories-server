@@ -21,6 +21,7 @@
     "nodemon": "^1.17.5",
     "pg": "^7.4.3",
     "snazzy": "^7.1.1",
-    "standard": "^11.0.1"
+    "standard": "^11.0.1",
+    "twitter-node-client": "0.0.6"
   }
 }
