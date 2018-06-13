@@ -6,8 +6,8 @@ const config = require('./data/twitter_config.js')
 const Twitter = require('twitter-node-client').Twitter
 const twitter = new Twitter(config)
 
-const getTweet = id => new Promise((success, fail) => {
-  twitter.getTweet({ id }, fail, success)
+const getTweet = id => new Promise((resolve, reject) => {
+  twitter.getTweet({ id }, reject, resolve)
 })
 
 getTweet('1006522254727892992')
