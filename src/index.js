@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const sip = require('./database/mock.json')
+const db = require('./db-fs.js')
 const config = require('./data/twitter_config.js')
 
 const Twitter = require('twitter-node-client').Twitter
@@ -32,6 +33,10 @@ app.get('/tweet', (req, res) => {
         author_screen_name: tweet.user.screen_name,
         text: tweet.text
       }
+
+      db.addTweetSlide(newTweet)
+        .then(() => res.json('ok'))
+        .catch(err => res.status(500).end(err.message))
     })
     .catch(console.error)
 })
