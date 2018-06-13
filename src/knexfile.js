@@ -1,3 +1,4 @@
+const path = require('path')
 module.exports = {
   development: {
     client: 'postgresql',
@@ -5,22 +6,20 @@ module.exports = {
       charset: 'utf8',
       user: 'capsip',
       password: 'capsip',
-      // port: process.env.DATABASE_PORT,
-      // host: process.env.DATABASE_HOST,
-      database: 'websiptest',
+      database: 'websiptest'
     }
   },
-    migrations: {
-      directory: __dirname + '/database/migrations',
-    },
+  migrations: {
+    directory: path.join(__dirname, '/database/migrations')
+  },
   production: {
     client: 'postgresql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: __dirname + '/database/migrations',
+      directory: path.join(__dirname, '/database/migrations')
     },
     seeds: {
-      directory: __dirname + '/database/production',
-    },
-  },
+      directory: path.join(__dirname, '/database/production')
+    }
+  }
 }

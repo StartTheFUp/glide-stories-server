@@ -7,12 +7,9 @@ exports.up = (knex, Promise) => {
     table.string('subtitle')
     table.string('image', 500)
     table.string('text', 300)
-
   })
-};
+}
 
 exports.down = (knex, Promise) => {
   return knex.schema.dropTable('sips')
-
-
-};
+}

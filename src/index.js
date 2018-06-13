@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
 
 app.get('/sips', (req, res) => {
   knex.select().from('sips')
-  .then((sips) => {
-    res.send(sips)
-  })
+    .then((sips) => {
+      res.send(sips)
+    })
 })
 
 app.listen(5000, () => console.log('Port 5000'))
