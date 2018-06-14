@@ -4,9 +4,7 @@ module.exports = {
     client: 'postgresql',
     connection: {
       charset: 'utf8',
-      user: 'capsip',
-      password: 'capsip',
-      database: 'websiptest'
+      database: 'websips'
     }
   },
   migrations: {
