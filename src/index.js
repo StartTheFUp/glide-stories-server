@@ -22,13 +22,6 @@ app.get('/', (req, res) => {
   res.json('Hello World')
 })
 
-app.get('/sips', (req, res) => {
-  knex.select().from('sips')
-    .then((sips) => {
-      res.send(sips)
-    })
-})
-
 app.get('/tweet', (req, res) => {
   getTweet('1006522254727892992')
     .then(tweet => JSON.parse(tweet))
@@ -52,5 +45,12 @@ app.get('/tweet', (req, res) => {
 app.get('/mock', (req, res) => {
   res.json(sip)
 })
+
+app.get('/sips', (req, res) => {
+  knex.select().from('sips')
+    .then((sips) => {
+      res.send(sips)
+    })
+  })
 
 app.listen(5000, () => console.log('Port 5000'))
