@@ -27,7 +27,7 @@ app.get('/sips', (req, res) => {
     .then((sips) => {
       res.send(sips)
     })
-  })
+})
 
 app.get('/tweet', (req, res) => {
   getTweet('1006522254727892992')
