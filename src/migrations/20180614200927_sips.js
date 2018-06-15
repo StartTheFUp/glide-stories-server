@@ -2,11 +2,9 @@
 exports.up = (knex, Promise) => {
   return knex.schema.createTable('sips', (table) => {
     table.increments()
-    table.string('type').notNullable()
+    table.timestamp('created_at').defaultTo(knex.fn.now()) /* ask clement for the default... utility*/
     table.string('title')
-    table.string('subtitle')
-    table.string('image', 500)
-    table.string('text', 300)
+    table.string('order')
   })
 }
 
