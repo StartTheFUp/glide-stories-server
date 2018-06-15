@@ -1,10 +1,10 @@
 
 exports.seed = (knex, Promise) => {
   // Deletes ALL existing entries
-  return knex('tweet_quote').del()
+  return knex('slides_tweet_quote').del()
     .then(() => {
       // Inserts seed entries
-      return knex('tweet_quote').insert([
+      return knex('slides_tweet_quote').insert([
         {
           id: 1,
           created_at: new Date(),
@@ -27,6 +27,6 @@ exports.seed = (knex, Promise) => {
           text: '#CloudGateDance \'des instants d’une rare poésie\' via @sceneweb https://t.co/dMDvRAZKqo https://t.co/oIpgAt8yQx',
           sip_id: 1
         }
-      ]);
-    });
-};
+      ])
+    })
+}

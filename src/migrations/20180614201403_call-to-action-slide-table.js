@@ -1,8 +1,8 @@
 
 exports.up = (knex, Promise) => {
-  return knex.schema.createTable('call_to_action', (table) => {
+  return knex.schema.createTable('slides_call_to_action', table => {
     table.increments()
-    table.timestamp('created_at').defaultTo(knex.fn.now()) /* ask clement for the default... utility*/
+    table.timestamp('created_at').defaultTo(knex.fn.now()) /* ask clement for the default... utility */
     table.string('title', 60)
     table.string('subtitle')
     table.string('image_url', 500)
@@ -12,8 +12,8 @@ exports.up = (knex, Promise) => {
 
     table.foreign('sip_id').references('id').inTable('sips')
   })
-};
+}
 
 exports.down = (knex, Promise) => {
-  return knex.schema.dropTable('call_to_action')
-};
+  return knex.schema.dropTable('slides_call_to_action')
+}
