@@ -51,6 +51,6 @@ app.get('/sips', (req, res) => {
     .then((sips) => {
       res.send(sips)
     })
-  })
+})
 
 app.listen(5000, () => console.log('Port 5000'))
