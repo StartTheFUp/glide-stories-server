@@ -5,6 +5,14 @@ module.exports = {
     connection: {
       charset: 'utf8',
       database: 'websips'
+    },
+    migrations: {
+      directory: path.join(__dirname, '/migrations')
+      //directory: './migrations'
+    },
+    seeds: {
+      directory: path.join(__dirname, '/seeds')
+      //directory: './seeds'
     }
   },
   migrations: {
