@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const sip = require('./database/mock.json')
-const db = require('./db-fs.js')
+const db = require('./db-knex.js')
 const config = require('./data/twitter_config.js')
 const knex = require('./database/knex.js')
 
@@ -35,9 +35,9 @@ app.get('/tweet', (req, res) => {
         text: tweet.text
       }
 
-      db.addTweetSlide(newTweet)
-        .then(() => res.json('ok'))
-        .catch(err => res.status(500).end(err.message))
+      // db.addTweetSlide(newTweet)
+      //   .then(() => res.json('ok'))
+      //   .catch(err => res.status(500).end(err.message))
     })
     .catch(console.error)
 })
