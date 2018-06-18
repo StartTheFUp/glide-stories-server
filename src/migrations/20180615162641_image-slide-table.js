@@ -6,7 +6,7 @@ exports.up = (knex, Promise) => {
     table.string('text', 120)
     table.string('image_url', 500)
     table.integer('sip_id').unsigned()
-    table.foreign('sip_id').references('id').inTable('sips')
+    table.foreign('sip_id').references('id').inTable('sips').onDelete('cascade').onUpdate('cascade')
   })
 }
 

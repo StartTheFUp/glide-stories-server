@@ -11,7 +11,7 @@ exports.up = (knex, Promise) => {
     table.date('publication_date')
     table.integer('sip_id').unsigned()
 
-    table.foreign('sip_id').references('id').inTable('sips')
+    table.foreign('sip_id').references('id').inTable('sips').onDelete('cascade').onUpdate('cascade')
   })
 }
 
