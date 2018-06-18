@@ -27,6 +27,6 @@ exports.seed = (knex, Promise) => {
           text: 'poésie\' via @sceneweb',
           sip_id: 1
         }
-      ]);
-    });
-};
+      ])
+    })
+}

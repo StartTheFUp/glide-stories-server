@@ -27,6 +27,6 @@ exports.seed = (knex, Promise) => {
           text: '#CloudGateDance \'des instants d’une rare poésie\' via @sceneweb https://t.co/dMDvRAZKqo https://t.co/oIpgAt8yQx',
           sip_id: 1
         }
-      ]);
-    });
-};
+      ])
+    })
+}
