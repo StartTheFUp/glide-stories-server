@@ -65,3 +65,15 @@ const getSipOrder = id => knex
 getSip(1).then(sip => console.log('sip :', getOrder(sip.slides)))
 /**/
 
+getSipOrder(1)
+  .then(async sipOrder => (await Promise.all(sipOrder
+      .map(order => order.order)
+      .join(' ')
+      .split(' ')
+      .map(slide => {
+        const [ type, id ] = slide.split('-')
+        return getSlideById(slideTypes[type], id)
+      })))
+      .reduce(flatten, []))
+  .then(console.log)
+/**/
