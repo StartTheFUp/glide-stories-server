@@ -32,6 +32,7 @@ const getSlideById = (slideType, slideId) => knex
     .where('id', slideId)
 
 const flatten = (a, b) => a.concat(b)
+const byOrder = (a, b) => a.order - b.order
 const getSip = async id => {
   const { order, ...sip } = await knex
    .select()
@@ -50,6 +51,8 @@ const getSip = async id => {
       return slides
     })))
     .reduce(flatten, [])
+    .sort(byOrder)
+
   return sip
 }
 
