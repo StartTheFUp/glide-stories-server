@@ -37,6 +37,17 @@ const getSip = async id => {
    .table('sips')
    .where('id', id)
    .first()
+
+  sip.slides = (await Promise.all(slideTypesEntries
+    .map(async ([type, tableName]) => {
+      const slides = await getSlidesBySipId(tableName, id)
+      for (const slide of slides) {
+        slide.uid = `${type}-${slide.id}`
+        slide.type = type
+        slide.order = order.indexOf(slide.uid)
+      }
+      return slides
+    })))
   return sip
 }
 
