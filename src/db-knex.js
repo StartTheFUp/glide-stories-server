@@ -31,6 +31,12 @@ const getSlideById = (slideType, slideId) => knex
     .table(slideType)
     .where('id', slideId)
 
+const getSip = async id => {
+  const { order, ...sip } = await knex
+   .select()
+   .table('sips')
+   .where('id', id)
+   .first()
   return sip
 }
 
