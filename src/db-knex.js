@@ -33,6 +33,7 @@ const getSlideById = (slideType, slideId) => knex
 
 const flatten = (a, b) => a.concat(b)
 const byOrder = (a, b) => a.order - b.order
+const getOrder = slides => slides.map(slide => slide.uid).join(' ')
 const getSip = async id => {
   const { order, ...sip } = await knex
    .select()
@@ -56,4 +57,11 @@ const getSip = async id => {
   return sip
 }
 
+const getSipOrder = id => knex
+  .select('order')
+  .from('sips')
+  .where('id', id)
+/*
+getSip(1).then(sip => console.log('sip :', getOrder(sip.slides)))
+/**/
 
