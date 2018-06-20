@@ -9,7 +9,7 @@ exports.seed = (knex, Promise) => {
           id: 1,
           created_at: new Date(),
           title: 'Art review',
-          order: 'intro-1 tweet-1 tweet-2'
+          order: 'intro-1 text-1 tweet-1 text-3 image-2 article-1 callToAction-3'
         },
         {
           id: 2,
