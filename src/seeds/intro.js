@@ -27,11 +27,7 @@ exports.seed = (knex, Promise) => {
           title: 'Test titre 3',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
           subtitle: 'test sous titre 3',
-<<<<<<< HEAD
           sip_id: 2
-=======
-          sip_id: 1
->>>>>>> bcc38c51d274dc92dfb2df5f438af24a03812d54
         }
       ])
     })
