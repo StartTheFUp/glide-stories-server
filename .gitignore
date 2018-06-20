@@ -61,5 +61,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# twitter_config file
+./data/twitter_config.js
+
 
 # End of https://www.gitignore.io/api/node
