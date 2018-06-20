@@ -53,4 +53,15 @@ app.get('/sips', (req, res) => {
     })
 })
 
+app.post('/sips', (req, res) => {
+  knex
+    .returning('id')
+    .insert({
+      title: req.body.title,
+      order: ''
+    })
+    .into('sips')
+    .then(ids => res.json(ids[0]))
+})
+
 app.listen(5000, () => console.log('Port 5000'))
