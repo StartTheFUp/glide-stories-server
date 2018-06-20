@@ -25,7 +25,7 @@ exports.seed = (knex, Promise) => {
           source_name: 'ELLE',
           author_name: 'Pierre Kvongr',
           text: 'poésie\' via @sceneweb',
-          sip_id: 1
+          sip_id: 2
         }
       ])
     })

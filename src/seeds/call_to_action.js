@@ -13,7 +13,7 @@ exports.seed = (knex, Promise) => {
           subtitle: 'test sous titre',
           btn_text: 'test btn',
           btn_link: 'https://twitter.com/languesFR/status/1006479461108338689',
-          sip_id: 1
+          sip_id: 2
         },
         {
           id: 2,
