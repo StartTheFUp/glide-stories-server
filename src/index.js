@@ -4,10 +4,10 @@ const sip = require('./database/mock.json')
 const db = require('./db-fs.js')
 const config = require('./data/twitter_config.js')
 const knex = require('./database/knex.js')
-
+const bodyParser = require('body-parser')
 const Twitter = require('twitter-node-client').Twitter
 const twitter = new Twitter(config)
-
+const { getSip } = require('./db-knex.js')
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
@@ -51,6 +51,11 @@ app.get('/sips', (req, res) => {
     .then((sips) => {
       res.send(sips)
     })
+})
+
+app.get('/sips/:id', (req, res) => {
+  getSip(id)
+    .then(res => console.log(req.params.id))
 })
 
 app.post('/sips', (req, res) => {
