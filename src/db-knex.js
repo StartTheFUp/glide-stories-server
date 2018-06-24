@@ -77,5 +77,17 @@ getSipOrder(1)
     })))
     .reduce(flatten, []))
   .then(console.log)
+
 const addSlide = (slideType, slide) => knex(slideType).insert(slide)
+
+const addTweetSlide = slide => {
+  // id generated automatically with auto increment
+  slide.created_at = new Date()
+
+  return addSlide('slides_tweet_quote', slide)
+}
 /**/
+
+module.exports = {
+  addTweetSlide
+}
