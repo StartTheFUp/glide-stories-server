@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const sip = require('./database/mock.json')
 // const db = require('./db-knex.js')
-const db = require('./db-fs.js')
+const db = require('./db-knex.js')
 const config = require('./data/twitter_config.js')
 
 const Twitter = require('twitter-node-client').Twitter
