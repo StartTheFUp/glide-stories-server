@@ -23,16 +23,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/tweet', (req, res) => {
-  getTweet('1006522254727892992')
+  getTweet('1009041135011090432')
     .then(tweet => JSON.parse(tweet))
     .then(tweet => {
       const newTweet = {
         publication_date: tweet.created_at,
-        article_url: '', // put the link send by the user
-        author_picture: tweet.user.profile_image_url_https,
+        tweet_url: '', // put the link send by the user
+        image_url: tweet.user.profile_image_url_https,
         author_name: tweet.user.name,
         author_screen_name: tweet.user.screen_name,
-        text: tweet.text
+        text: tweet.text,
+        sip_id: 2 // get sip_id
       }
 
       db.addTweetSlide(newTweet)
