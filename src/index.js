@@ -1,13 +1,14 @@
 const express = require('express')
 const app = express()
 const sip = require('./database/mock.json')
-// const db = require('./db-knex.js')
 const db = require('./db-knex.js')
-const config = require('./data/twitter_config.js')
 
+const config = require('./data/twitter_config.js')
+const knex = require('./database/knex.js')
+const bodyParser = require('body-parser')
 const Twitter = require('twitter-node-client').Twitter
 const twitter = new Twitter(config)
-
+const { getSip } = require('./db-knex.js')
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
@@ -45,6 +46,29 @@ app.get('/tweet', (req, res) => {
 
 app.get('/mock', (req, res) => {
   res.json(sip)
+})
+
+app.get('/sips', (req, res) => {
+  knex.select().from('sips')
+    .then((sips) => {
+      res.send(sips)
+    })
+})
+
+app.get('/sips/:id', (req, res) => {
+  getSip(id)
+    .then(res => console.log(req.params.id))
+})
+
+app.post('/sips', (req, res) => {
+  knex
+    .returning('id')
+    .insert({
+      title: req.body.title,
+      order: ''
+    })
+    .into('sips')
+    .then(ids => res.json(ids[0]))
 })
 
 app.listen(5000, () => console.log('Port 5000'))
