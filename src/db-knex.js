@@ -77,4 +77,5 @@ getSipOrder(1)
     })))
     .reduce(flatten, []))
   .then(console.log)
+const addSlide = (slideType, slide) => knex(slideType).insert(slide)
 /**/
