@@ -52,6 +52,17 @@ const slideHandlers = {
         sip_id: sipId
       }))
   },
+  article: ({ type, sipId, articleUrl }) => {
+    return getMetadatas(articleUrl)
+      .then(metadatas => db.addArticleQuoteSlide({
+        article_url: metadatas.url,
+        author_name: metadatas.author,
+        source_name: metadatas.publisher,
+        source_image: metadatas.logo,
+        text: '',
+        sip_id: sipId
+      }))
+  }
 }
 
 app.post('/slides', (req, res, next) => {
@@ -62,18 +73,6 @@ app.post('/slides', (req, res, next) => {
 })
 
 
-app.get('/article', (req, res, next) => {
-  getMetadatas('http://www.elle.fr/People/La-vie-des-people/News/Johnny-Hallyday-les-fans-rassembles-a-la-Madeleine-pour-les-75-ans-du-rockeur')
-    .then(metadatas => db.addArticleQuoteSlide({
-      article_url: metadatas.url,
-      author_name: metadatas.author,
-      source_name: metadatas.publisher,
-      source_image: metadatas.logo,
-      text: '',
-      sip_id: 2 // get the right sip id
-    }))
-    .then(() => res.json('ok'))
-    .catch(next)
 })
 
 app.get('/mock', (req, res) => {
