@@ -39,9 +39,8 @@ app.get('/tweet', (req, res, next) => {
     .catch(next)
 })
 
-app.get('/mock', (req, res, next) => {
+app.get('/mock', (req, res) => {
   res.json(sip)
-    .catch(next)
 })
 
 app.get('/sips', (req, res, next) => {
