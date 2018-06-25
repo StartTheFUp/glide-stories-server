@@ -88,10 +88,10 @@ const addTweetSlide = slide => {
   return addSlide('slides_tweet_quote', slide)
 }
 /**/
-const createSip = () => knex
+const createSip = title => knex
   .returning('id')
   .insert({
-    title: req.body.title,
+    title: title,
     order: ''
   })
   .into('sips')
