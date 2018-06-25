@@ -5,7 +5,7 @@ const db = require('./db-knex.js')
 
 const config = require('./data/twitter_config.js')
 const knex = require('./database/knex.js')
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const Twitter = require('twitter-node-client').Twitter
 const twitter = new Twitter(config)
 const { getSip } = require('./db-knex.js')

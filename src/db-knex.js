@@ -88,5 +88,5 @@ const addTweetSlide = slide => {
 
 module.exports = {
   addTweetSlide,
-  getSip,
+  getSip
 }
