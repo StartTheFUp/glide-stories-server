@@ -56,8 +56,6 @@ const getSip = async id => {
   return sip
 }
 
-getSip(1).then(sip => console.log(sip))
-
 const getSipOrder = id => knex
   .select('order')
   .from('sips')
@@ -89,5 +87,6 @@ const addTweetSlide = slide => {
 /**/
 
 module.exports = {
-  addTweetSlide
+  addTweetSlide,
+  getSip,
 }
