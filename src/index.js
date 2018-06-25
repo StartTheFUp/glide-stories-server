@@ -48,6 +48,9 @@ app.get('/tweet', (req, res, next) => {
       text: tweet.text,
       sip_id: 2 // get sip_id
     }))
+app.post('/slides', (req, res, next) => {
+  // create
+  slideHandlers[req.body.type](req.body)
     .then(() => res.json('ok'))
     .catch(next)
 })
