@@ -87,7 +87,13 @@ const addTweetSlide = slide => {
 
   return addSlide('slides_tweet_quote', slide)
 }
-/**/
+
+const addArticleQuoteSlide = slide => {
+  slide.created_at = new Date()
+
+  return addSlide('slides_article_quote', slide)
+}
+
 const createSip = title => knex
   .returning('id')
   .insert({
@@ -98,6 +104,7 @@ const createSip = title => knex
 
 module.exports = {
   addTweetSlide,
+  addArticleQuoteSlide,
   getSip,
   getSips,
   createSip

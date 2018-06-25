@@ -12,6 +12,9 @@ const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
 
+const metascraper = require('metascraper')
+const got = require('got')
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin)
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
@@ -37,6 +40,27 @@ app.get('/tweet', (req, res, next) => {
     .then(() => res.json('ok'))
     .catch(next)
 })
+
+const getMetadatas = async targetUrl => {
+  const { body: html, url } = await got(targetUrl)
+  const metadata = await metascraper({ html, url })
+  console.log(metadata)
+  return metadata
+}
+
+app.get('/article', (req, res, next) => {
+  getMetadatas('http://www.elle.fr/People/La-vie-des-people/News/Johnny-Hallyday-les-fans-rassembles-a-la-Madeleine-pour-les-75-ans-du-rockeur')
+    .then(metadatas => db.addArticleQuoteSlide({
+        article_url: metadatas.url, 
+        author_name: metadatas.author,
+        source_name: metadatas.publisher,
+        source_image: metadatas.logo,
+        text: '',
+        sip_id: 1
+      }))
+    .then(() => res.json('ok'))
+    .catch(next)
+  })
 
 app.get('/mock', (req, res) => {
   res.json(sip)

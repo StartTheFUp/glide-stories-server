@@ -15,7 +15,7 @@ exports.seed = (knex, Promise) => {
           id: 2,
           created_at: new Date(),
           title: 'Art review',
-          order: 'intro-2 intro-3'
+          order: 'intro-2 intro-3 article-2'
         }
       ])
     })
