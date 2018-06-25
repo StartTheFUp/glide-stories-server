@@ -4,7 +4,12 @@ const sip = require('./database/mock.json')
 const db = require('./db-knex.js')
 
 const config = require('./data/twitter_config.js')
-// const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
+
+// MIDDLEWARES
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 const Twitter = require('twitter-node-client').Twitter
 const twitter = new Twitter(config)
