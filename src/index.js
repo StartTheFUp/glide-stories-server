@@ -23,44 +23,42 @@ app.get('/', (req, res) => {
   res.json('Hello World')
 })
 
-app.get('/tweet', (req, res) => {
+app.get('/tweet', (req, res, next) => {
   getTweet('1009041135011090432')
-    .then(tweet => JSON.parse(tweet))
-    .then(tweet => {
-      const newTweet = {
-        publication_date: tweet.created_at,
-        tweet_url: '', // put the link send by the user
-        image_url: tweet.user.profile_image_url_https,
-        author_name: tweet.user.name,
-        author_screen_name: tweet.user.screen_name,
-        text: tweet.text,
-        sip_id: 2 // get sip_id
-      }
-
-      db.addTweetSlide(newTweet)
-        .then(() => res.json('ok'))
-        .catch(err => res.status(500).end(err.message))
-    })
-    .catch(console.error)
+    .then(JSON.parse)
+    .then(tweet => db.addTweetSlide({
+      publication_date: tweet.created_at,
+      tweet_url: '', // put the link send by the user
+      image_url: tweet.user.profile_image_url_https,
+      author_name: tweet.user.name,
+      author_screen_name: tweet.user.screen_name,
+      text: tweet.text,
+      sip_id: 2 // get sip_id
+    }))
+    .then(() => res.json('ok'))
+    .catch(next)
 })
 
-app.get('/mock', (req, res) => {
+app.get('/mock', (req, res, next) => {
   res.json(sip)
+    .catch(next)
 })
 
-app.get('/sips', (req, res) => {
+app.get('/sips', (req, res, next) => {
   knex.select().from('sips')
     .then((sips) => {
       res.send(sips)
     })
+    .catch(next)
 })
 
-app.get('/sips/:id', (req, res) => {
-  getSip(id)
-    .then(res => console.log(req.params.id))
+app.get('/sips/:id', (req, res, next) => {
+  getSip(req.params.id)
+    .then(sip => res.json(sip))
+    .catch(next)
 })
 
-app.post('/sips', (req, res) => {
+app.post('/sips', (req, res, next) => {
   knex
     .returning('id')
     .insert({
@@ -69,6 +67,7 @@ app.post('/sips', (req, res) => {
     })
     .into('sips')
     .then(ids => res.json(ids[0]))
+    .catch(next)
 })
 
 app.listen(5000, () => console.log('Port 5000'))
