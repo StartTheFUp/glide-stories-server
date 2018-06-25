@@ -20,6 +20,12 @@ const getTweet = id => new Promise((resolve, reject) => {
 const metascraper = require('metascraper')
 const got = require('got')
 
+const getMetadatas = async targetUrl => {
+  const { body: html, url } = await got(targetUrl)
+  const metadata = await metascraper({ html, url })
+  return metadata
+}
+
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin)
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
@@ -46,12 +52,6 @@ app.get('/tweet', (req, res, next) => {
     .catch(next)
 })
 
-const getMetadatas = async targetUrl => {
-  const { body: html, url } = await got(targetUrl)
-  const metadata = await metascraper({ html, url })
-  console.log(metadata)
-  return metadata
-}
 
 app.get('/article', (req, res, next) => {
   getMetadatas('http://www.elle.fr/People/La-vie-des-people/News/Johnny-Hallyday-les-fans-rassembles-a-la-Madeleine-pour-les-75-ans-du-rockeur')
