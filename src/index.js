@@ -72,6 +72,9 @@ app.post('/slides', (req, res, next) => {
     .catch(next)
 })
 
+app.post('/slides/:id', (req, res, next) => {
+  // update
+})
 
 })
 
