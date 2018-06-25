@@ -76,6 +76,7 @@ app.post('/slides/:id', (req, res, next) => {
   // update
 })
 
+app.delete('/slides/:id', (req, res, next) => {
 })
 
 app.get('/mock', (req, res) => {
