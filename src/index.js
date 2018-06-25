@@ -44,27 +44,19 @@ app.get('/mock', (req, res) => {
 })
 
 app.get('/sips', (req, res, next) => {
-  knex.select().from('sips')
-    .then((sips) => {
-      res.send(sips)
-    })
+  db.getSips()
+    .then(sips => res.send(sips))
     .catch(next)
 })
 
 app.get('/sips/:id', (req, res, next) => {
-  getSip(req.params.id)
+  db.getSip(req.params.id)
     .then(sip => res.json(sip))
     .catch(next)
 })
 
 app.post('/sips', (req, res, next) => {
-  knex
-    .returning('id')
-    .insert({
-      title: req.body.title,
-      order: ''
-    })
-    .into('sips')
+  db.createSip()
     .then(ids => res.json(ids[0]))
     .catch(next)
 })

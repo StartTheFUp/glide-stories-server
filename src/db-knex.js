@@ -33,6 +33,9 @@ const getSlideById = (slideType, slideId) => knex
 const flatten = (a, b) => a.concat(b)
 const byOrder = (a, b) => a.order - b.order
 // const getOrder = slides => slides.map(slide => slide.uid).join(' ')
+
+const getSips = () => knex.select().from('sips')
+
 const getSip = async id => {
   const { order, ...sip } = await knex
     .select()
@@ -85,8 +88,17 @@ const addTweetSlide = slide => {
   return addSlide('slides_tweet_quote', slide)
 }
 /**/
+const createSip = () => knex
+  .returning('id')
+  .insert({
+    title: req.body.title,
+    order: ''
+  })
+  .into('sips')
 
 module.exports = {
   addTweetSlide,
-  getSip
+  getSip,
+  getSips,
+  createSip
 }
