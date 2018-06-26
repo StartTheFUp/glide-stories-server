@@ -1,4 +1,5 @@
 const knex = require('./database/knex.js')
+const _ = require('lodash')
 
 const slideTypes = {
   text: 'slides_text',
@@ -9,6 +10,8 @@ const slideTypes = {
   callToAction: 'slides_call_to_action'
 }
 const slideTypesEntries = Object.entries(slideTypes)
+
+const camelSnake = obj => _.mapKeys(obj, (value, key) => _.camelCase(key))
 /*
 
 const dbTypesToJS = jsTypesToDB)
