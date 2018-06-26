@@ -57,6 +57,7 @@ const getSip = async id => {
     })))
     .reduce(flatten, [])
     .sort(byOrder)
+    .map(camelSnake)
 
   return sip
 }
@@ -76,6 +77,7 @@ getSipOrder(1)
       return getSlideById(slideTypes[type], id)
     })))
     .reduce(flatten, []))
+    .map(camelSnake)
   .then(console.log)
 
 const addSlide = (slideType, slide) => knex(slideType).insert(slide)
