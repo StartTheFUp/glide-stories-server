@@ -9,7 +9,6 @@ exports.up = (knex, Promise) => {
     table.string('btn_text', 30)
     table.string('btn_link', 500)
     table.integer('sip_id').unsigned()
-
     table.foreign('sip_id').references('id').inTable('sips').onDelete('cascade').onUpdate('cascade')
   })
 }

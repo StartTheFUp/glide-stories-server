@@ -78,7 +78,7 @@ getSipOrder(1)
     })))
     .reduce(flatten, []))
   .map(camelSnake)
-  .then(console.log)
+  // .then(console.log)
 
 const addSlide = (slideType, slide) => knex(slideType).insert(slide)
 
@@ -104,6 +104,7 @@ const createSip = title => knex
   .into('sips')
 
 module.exports = {
+  addSlide,
   addTweetSlide,
   addArticleQuoteSlide,
   getSip,
