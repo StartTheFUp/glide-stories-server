@@ -38,6 +38,8 @@ const byOrder = (a, b) => a.order - b.order
 
 const getSips = () => knex.select().from('sips')
 
+const getSlidesIntro = () => knex.select().from('slides_intro')
+
 const getSip = async id => {
   const { order, ...sip } = await knex
     .select()

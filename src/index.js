@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next()
 })
 
-//attention à supprimer 
+//attention à supprimer
 
 app.get('/', (req, res) => {
   res.json('hello world')
@@ -125,6 +125,12 @@ app.get('/mock', (req, res) => {
 app.get('/sips', (req, res, next) => {
   db.getSips()
     .then(sips => res.send(sips))
+    .catch(next)
+})
+
+app.get('/preview', (req, res, next) => {
+  db.getSlidesIntro()
+    .then(slideintro => res.send(slideintro))
     .catch(next)
 })
 
