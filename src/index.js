@@ -128,11 +128,11 @@ app.get('/sips', (req, res, next) => {
     .catch(next)
 })
 
-app.get('/preview', (req, res, next) => {
-  db.getSlidesIntro()
-    .then(slideintro => res.send(slideintro))
-    .catch(next)
-})
+// app.get('/preview', (req, res, next) => {
+//   db.getPreview()
+//     .then(preview => res.send(preview))
+//     .catch(next)
+// })
 
 app.get('/sips/:id', (req, res, next) => {
   db.getSip(req.params.id)
@@ -146,4 +146,4 @@ app.post('/sips', (req, res, next) => {
     .catch(next)
 })
 
-app.listen(5000, () => console.log('Port 5000'))
+app.listen(5001, () => console.log('Port 5000'))

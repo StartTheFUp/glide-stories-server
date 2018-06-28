@@ -38,8 +38,6 @@ const byOrder = (a, b) => a.order - b.order
 
 const getSips = () => knex.select().from('sips')
 
-const getSlidesIntro = () => knex.select().from('slides_intro')
-
 const getSip = async id => {
   const { order, ...sip } = await knex
     .select()
@@ -63,6 +61,14 @@ const getSip = async id => {
 
   return sip
 }
+
+// const getPreview = () => knex('sips')
+//   .join('slides_intro','sips.id', '=', 'slides_intro.sip_id' )
+//   .select('sips.id', 'sips.title', 'sips.created_at', 'slides_intro.sip_id', 'slides_intro.created_at', 'slides_intro.title', 'slides_intro.subtitle', 'slides_intro.image_url')
+
+const getSipPreview = () => knex
+  .select('order')
+  .from('sips')
 
 const getSipOrder = id => knex
   .select('order')
@@ -111,5 +117,6 @@ module.exports = {
   addArticleQuoteSlide,
   getSip,
   getSips,
-  createSip
+  createSip,
+  getSipPreview
 }
