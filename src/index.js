@@ -39,14 +39,14 @@ app.get('/', (req, res) => {
 })
 
 const slideHandlers = {
-  tweet: ({ type, sipId, tweetUrl }) => {
-    const tweetId = tweetUrl.split('/').slice(-1).join('')
+  tweet: ({ sipId, url }) => {
+    const tweetId = url.split('/').slice(-1).join('')
 
     return getTweet(tweetId)
       .then(JSON.parse)
       .then(tweet => db.addTweetSlide({
         publication_date: tweet.created_at,
-        tweet_url: tweetUrl,
+        tweet_url: url,
         image_url: tweet.user.profile_image_url_https,
         author_name: tweet.user.name,
         author_screen_name: tweet.user.screen_name,
@@ -54,8 +54,8 @@ const slideHandlers = {
         sip_id: sipId
       }))
   },
-  article: ({ type, sipId, articleUrl}) => {
-    return getMetadatas(articleUrl)
+  article: ({ sipId, url}) => {
+    return getMetadatas(url)
        .then(metadatas => db.addArticleQuoteSlide({
         article_url: metadatas.url,
         author_name: metadatas.author,
