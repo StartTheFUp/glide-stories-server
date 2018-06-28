@@ -118,10 +118,6 @@ app.delete('/slides/:id', (req, res, next) => {
   // delete
 })
 
-app.get('/mock', (req, res) => {
-  res.json(sip)
-})
-
 app.get('/sips', (req, res, next) => {
   db.getSips()
     .then(sips => res.send(sips))
