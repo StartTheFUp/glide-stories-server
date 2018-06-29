@@ -8,7 +8,7 @@ exports.seed = (knex, Promise) => {
         {
           id: 1,
           created_at: new Date(),
-          text: 'text titre',
+          text: 'Of all the galleries in the Tate empire, the one that seems most comfortable in its own skin is Tate Liverpool.',
           sip_id: 1
         },
         {
@@ -20,7 +20,7 @@ exports.seed = (knex, Promise) => {
         {
           id: 3,
           created_at: new Date(),
-          text: 'fkenzlmrizoas titre 3',
+          text: 'Tate Modern itself, meanwhile, has grown so unfeasibly huge, it is now a place you go for the foyers, not for the art.',
           sip_id: 1
         }
       ])
