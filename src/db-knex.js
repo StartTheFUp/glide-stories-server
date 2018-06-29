@@ -63,9 +63,10 @@ const getSip = async id => {
 }
 
 const getPreview = () => knex
-  .select('slides_intro.*', 'sips.title AS sipsTitle', 'sips.created_at AS sipsCreatedAt')
+  .select('sips.*', 'slides_intro.title AS slidesIntroTitle', 'slides_intro.created_at AS slidesIntroCreatedAt', 'slides_intro.subtitle', 'slides_intro.image_url')
   .from('slides_intro')
-  .leftJoin('sips','sips.id', 'slides_intro.sip_id' )
+  .innerJoin('sips','sips.id', 'slides_intro.sip_id' )
+  .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map).values() ])
  // .select('sips.id', 'sips.title', 'sips.created_at', 'slides_intro.sip_id', 'slides_intro.created_at', 'slides_intro.title', 'slides_intro.subtitle', 'slides_intro.image_url')
 
 // const getSipPreview = () => knex
