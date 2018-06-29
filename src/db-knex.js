@@ -62,13 +62,15 @@ const getSip = async id => {
   return sip
 }
 
-// const getPreview = () => knex('sips')
-//   .join('slides_intro','sips.id', '=', 'slides_intro.sip_id' )
-//   .select('sips.id', 'sips.title', 'sips.created_at', 'slides_intro.sip_id', 'slides_intro.created_at', 'slides_intro.title', 'slides_intro.subtitle', 'slides_intro.image_url')
+const getPreview = () => knex
+  .select('slides_intro.*', 'sips.title AS sipsTitle', 'sips.created_at AS sipsCreatedAt')
+  .from('slides_intro')
+  .leftJoin('sips','sips.id', 'slides_intro.sip_id' )
+ // .select('sips.id', 'sips.title', 'sips.created_at', 'slides_intro.sip_id', 'slides_intro.created_at', 'slides_intro.title', 'slides_intro.subtitle', 'slides_intro.image_url')
 
-const getSipPreview = () => knex
-  .select('order')
-  .from('sips')
+// const getSipPreview = () => knex
+//   .select('order')
+//   .from('sips')
 
 const getSipOrder = id => knex
   .select('order')
@@ -118,5 +120,5 @@ module.exports = {
   getSip,
   getSips,
   createSip,
-  getSipPreview
+  getPreview
 }
