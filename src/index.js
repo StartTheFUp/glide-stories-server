@@ -110,6 +110,11 @@ app.post('/slides', (req, res, next) => {
     .catch(next)
 })
 
+app.post('/test', (req, res, next) => {
+  db.test(req.body)
+  .then(() => res.json('ok'))
+})
+
 app.post('/slides/:id', (req, res, next) => {
   // update
 })

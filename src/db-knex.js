@@ -105,11 +105,21 @@ const createSip = title => knex
   })
   .into('sips')
 
+const test = (slide) => {
+  console.log(slide)
+  return knex
+  .select()
+  .from(slideTypes[slide.type])
+  .where('id', slide.id)
+  .update('text', slide.text)
+}
+
 module.exports = {
   addSlide,
   addTweetSlide,
   addArticleQuoteSlide,
   getSip,
   getSips,
-  createSip
+  createSip,
+  test,
 }
