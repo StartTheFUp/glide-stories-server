@@ -96,6 +96,17 @@ app.get('/sips/:id', (req, res, next) => {
     .catch(next)
 })
 
+app.post('/sips/:id', (req, res, next) => {
+ // update
+ const id = req.params.id
+ const order = req.body.order
+ console.log(order);
+
+ db.updateSipOrder(id, order)
+  .then(() => res.json('OK'))
+  .catch(next)
+})
+
 app.post('/sips', (req, res, next) => {
   db.createSip(req.body.title)
     .then(ids => res.json(ids[0]))
