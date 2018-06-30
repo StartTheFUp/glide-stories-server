@@ -70,7 +70,11 @@ const getSipOrder = id => knex
   .from('sips')
   .where('id', id)
 
-getSipOrder(1)
+const updateSipOrder = (id, data) => knex('sips')
+  .where('id', id)
+  .update('order', data)
+
+getSipOrder(1) // not used for now
   .then(async sipOrder => (await Promise.all(sipOrder
     .map(order => order.order)
     .join(' ')
