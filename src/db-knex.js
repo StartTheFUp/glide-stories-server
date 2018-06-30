@@ -115,5 +115,6 @@ module.exports = {
   addArticleQuoteSlide,
   getSip,
   getSips,
-  createSip
+  createSip,
+  updateSipOrder
 }
