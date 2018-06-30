@@ -86,7 +86,7 @@ app.get('/mock', (req, res) => {
 
 app.get('/sips', (req, res, next) => {
   db.getSips()
-    .then(sips => res.send(sips))
+    .then(sips => res.json(sips))
     .catch(next)
 })
 
@@ -97,14 +97,14 @@ app.get('/sips/:id', (req, res, next) => {
 })
 
 app.post('/sips/:id', (req, res, next) => {
- // update
- const id = req.params.id
- const order = req.body.order
- console.log(order);
+  // update
+  const id = req.params.id
+  const order = req.body.order
+  console.log(order)
 
- db.updateSipOrder(id, order)
-  .then(() => res.json('OK'))
-  .catch(next)
+  db.updateSipOrder(id, order)
+    .then(() => res.json('OK'))
+    .catch(next)
 })
 
 app.post('/sips', (req, res, next) => {

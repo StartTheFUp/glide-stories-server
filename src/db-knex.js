@@ -98,7 +98,7 @@ const addTweetSlide = slide => {
 
 const addArticleQuoteSlide = slide => {
   slide.created_at = new Date()
-
+  console.log(slide)
   return addSlide('slides_article_quote', slide)
 }
 
