@@ -12,6 +12,9 @@ const slideTypes = {
 const slideTypesEntries = Object.entries(slideTypes)
 
 const camelSnake = obj => _.mapKeys(obj, (value, key) => _.camelCase(key))
+
+// const camelSnake = fp.mapKeys((value, key) => _.camelCase(key))
+
 /*
 
 const dbTypesToJS = jsTypesToDB)
