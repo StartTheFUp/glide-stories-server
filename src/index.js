@@ -111,7 +111,7 @@ app.post('/slides', (req, res, next) => {
 })
 
 app.post('/updateSip', (req, res, next) => {
-  db.test(req.body)
+  db.updateSip(req.body)
     .then(() => res.json('ok'))
 })
 

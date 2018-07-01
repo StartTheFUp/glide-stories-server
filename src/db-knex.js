@@ -159,8 +159,7 @@ const updateSlide = {
     .update('btn_link', slide.btnLink),
 }
 
-const test = (slide) => {
-  console.log(slide)
+const updateSip = (slide) => {
   return updateSlide[slide.type](slide)
 }
 
@@ -171,5 +170,5 @@ module.exports = {
   getSip,
   getSips,
   createSip,
-  test,
+  updateSip,
 }
