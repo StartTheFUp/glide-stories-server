@@ -20,8 +20,8 @@ const getTweet = id => new Promise((resolve, reject) => {
 const metascraper = require('metascraper')
 const got = require('got')
 
-const getMetadatas = async targetUrl => {
-  const { body: html, url } = await got(targetUrl)
+const getMetadatas = async articleUrl => {
+  const { body: html, url } = await got(articleUrl)
   const metadata = await metascraper({ html, url })
   return metadata
 }
@@ -32,19 +32,21 @@ app.use((req, res, next) => {
   next()
 })
 
+//attention à supprimer 
+
 app.get('/', (req, res) => {
-  res.json('Hello World')
+  res.json('hello world')
 })
 
 const slideHandlers = {
-  tweet: ({ type, sipId, tweetUrl }) => {
-    const tweetId = tweetUrl.split('/').slice(-1).join('')
+  tweet: ({ sipId, url }) => {
+    const tweetId = url.split('/').slice(-1).join('')
 
     return getTweet(tweetId)
       .then(JSON.parse)
       .then(tweet => db.addTweetSlide({
         publication_date: tweet.created_at,
-        tweet_url: tweetUrl,
+        tweet_url: url,
         image_url: tweet.user.profile_image_url_https,
         author_name: tweet.user.name,
         author_screen_name: tweet.user.screen_name,
@@ -52,9 +54,9 @@ const slideHandlers = {
         sip_id: sipId
       }))
   },
-  article: ({ type, sipId, articleUrl }) => {
-    return getMetadatas(articleUrl)
-      .then(metadatas => db.addArticleQuoteSlide({
+  article: ({ sipId, url}) => {
+    return getMetadatas(url)
+       .then(metadatas => db.addArticleQuoteSlide({
         article_url: metadatas.url,
         author_name: metadatas.author,
         source_name: metadatas.publisher,
@@ -62,8 +64,44 @@ const slideHandlers = {
         text: '',
         sip_id: sipId
       }))
-  }
+  },
+  text: ({ sipId }) => {
+    return db.addSlide('slides_text', {
+      text: '',
+      sip_id: sipId,
+      created_at: new Date()
+    })
+  },
+  image: ({ sipId }) => {
+    return db.addSlide('slides_image', {
+      text: '',
+      image_url: '',
+      sip_id: sipId,
+      created_at: new Date()
+    })
+  },
+  intro: ({ sipId }) => {
+    return db.addSlide('slides_intro', {
+      title: '',
+      subtitle: '',
+      image_url: '',
+      sip_id: sipId,
+      created_at: new Date()
+    })
+  },
+  callToAction: ({ sipId }) => {
+    return db.addSlide('slides_call_to_action', {
+      title: '',
+      subtitle: '',
+      image_url: '',
+      btn_text: '',
+      btn_link: '',
+      sip_id: sipId,
+      created_at: new Date()
+    })
+  },
 }
+
 
 app.post('/slides', (req, res, next) => {
   // create
