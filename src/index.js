@@ -14,9 +14,9 @@ const app = express()
 const twitter = new Twitter(config)
 
 aws.config.update({
-    secretAccessKey : 'svQm/6UJPrzjgazOYXMcdeaA5BXT7/drD9PcEIZ3',
-    accessKeyId:'AKIAJHBZMIGCPJ3Q6AEA',
-    region : 'eu-west-3'
+    secretAccessKey : '',
+    accessKeyId:'',
+    region : ''
 })
 
 const s3 = new aws.S3()
@@ -137,7 +137,7 @@ app.post('/slides', (req, res, next) => {
 })
 
 app.post('/slides/:id', (req, res, next) => {
-  db.updateSip({
+  db.updateSlide({
     id: req.params.id,
     ...req.body
   })
