@@ -46,7 +46,6 @@ const getSip = async id => {
     .table('sips')
     .where('id', id)
     .first()
-
   sip.slides = (await Promise.all(slideTypesEntries
     .map(async ([type, tableName]) => {
       const slides = await getSlidesBySipId(tableName, id)
@@ -79,7 +78,6 @@ getSipOrder(1)
     })))
     .reduce(flatten, []))
   .map(camelSnake)
-  // .then(console.log)
 
 const addSlide = (slideType, slide) => knex(slideType).insert(slide)
 
