@@ -41,8 +41,6 @@ const byOrder = (a, b) => a.order - b.order
 
 const getSips = () => knex.select().from('sips')
 
-const getSlidesIntro = () => knex.select().from('slides_intro')
-
 const getSip = async id => {
   const { order, ...sip } = await knex
     .select()
@@ -109,7 +107,6 @@ const createSip = title => knex
   })
   .into('sips')
 
-
 const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
   .where('id', id)
   .update('image_url', image)
@@ -167,6 +164,6 @@ module.exports = {
   getSips,
   createSip,
   updateSlide,
-  setSlideImage
+  setSlideImage,
   updateSipOrder
 }
