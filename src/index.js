@@ -32,6 +32,7 @@ app.use((req, res, next) => {
   next()
 })
 
+
 app.get('/', (req, res) => {
   res.json('Hello World')
 })
@@ -97,14 +98,14 @@ app.get('/sips/:id', (req, res, next) => {
 })
 
 app.post('/sips/:id', (req, res, next) => {
-  // update
-  const id = req.params.id
-  const order = req.body.order
-  console.log(order)
+ // update sip order
+ const id = req.params.id
+ const order = req.body.order
+ console.log(order);
 
-  db.updateSipOrder(id, order)
-    .then(() => res.json('OK'))
-    .catch(next)
+ db.updateSipOrder(id, order)
+  .then(() => res.json('OK'))
+  .catch(next)
 })
 
 app.post('/sips', (req, res, next) => {
