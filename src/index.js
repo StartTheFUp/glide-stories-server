@@ -1,7 +1,7 @@
 const express = require('express')
 const sip = require('./database/mock.json')
 const db = require('./db-knex.js')
-
+const got = require('got')
 const config = require('./data/twitter_config.js')
 const knex = require('./database/knex.js')
 const aws = require('aws-sdk')
@@ -10,21 +10,22 @@ const multerS3 = require('multer-s3')
 const Twitter = require('twitter-node-client').Twitter
 
 const app = express()
-const s3 = new aws.S3()
 const twitter = new Twitter(config)
 
 aws.config.update({
-    secretAccessKey : ,
-    accessKeyId: ,
-    region :
+    secretAccessKey : 'svQm/6UJPrzjgazOYXMcdeaA5BXT7/drD9PcEIZ3',
+    accessKeyId:'AKIAJHBZMIGCPJ3Q6AEA',
+    region : 'eu-west-3'
 })
+
+const s3 = new aws.S3()
+
 
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
 
 const metascraper = require('metascraper')
-const got = require('got')
 
 const getMetadatas = async articleUrl => {
   const { body: html, url } = await got(articleUrl)
@@ -52,7 +53,7 @@ const upload = multer({
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    res.json('Hello World !')
 });
 
 app.post('/upload', upload.array('upl',1), (req, res, next) => {
