@@ -7,6 +7,7 @@ const knex = require('./database/knex.js')
 const aws = require('aws-sdk')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
+const metascraper = require('metascraper')
 const Twitter = require('twitter-node-client').Twitter
 
 const app = express()
@@ -20,12 +21,10 @@ aws.config.update({
 
 const s3 = new aws.S3()
 
-
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
 
-const metascraper = require('metascraper')
 
 const getMetadatas = async articleUrl => {
   const { body: html, url } = await got(articleUrl)
@@ -56,10 +55,13 @@ app.get('/', (req, res) => {
     res.json('Hello World !')
 });
 
-app.post('/upload', upload.array('upl',1), (req, res, next) => {
-    console.log({ body : req.body })
-    console.log({ file : req.files })
-    res.send("Uploaded!")
+app.post('/slide/:type/:id', upload.array('image', 1), (req, res, next) => {
+  console.log({ body : req.body })
+  console.log({ file : req.files })
+  const [ { location } ] = req.files
+  db.setSlideImage({ type: req.params.type, id: req.params.id, image: location })
+    .then(() => res.json({ url: location }))
+    .catch(next)
 })
 
 const slideHandlers = {
@@ -134,9 +136,13 @@ app.post('/slides', (req, res, next) => {
     .catch(next)
 })
 
-app.post('/updateSip', (req, res, next) => {
-  db.updateSip(req.body)
+app.post('/slides/:id', (req, res, next) => {
+  db.updateSip({
+    id: req.params.id,
+    ...req.body
+  })
     .then(() => res.json('ok'))
+    .catch(next)
 })
 
 app.delete('/slides/:id', (req, res, next) => {
@@ -166,5 +172,6 @@ app.post('/sips', (req, res, next) => {
     .then(ids => res.json(ids[0]))
     .catch(next)
 })
+
 
 app.listen(5000, () => console.log('Port 5000'))

@@ -104,31 +104,28 @@ const createSip = title => knex
   })
   .into('sips')
 
-const updateSlide = {
-  text: (slide) => knex
-    .select()
-    .from(slideTypes[slide.type])
+
+const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
+  .where('id', id)
+  .update('image_url', image)
+
+const slideUpdators = {
+  text: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('text', slide.text),
 
-  intro: (slide) => knex
-    .select()
-    .from(slideTypes[slide.type])
+  intro: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('title', slide.title)
     .update('subtitle', slide.subtitle)
     .update('image_url', slide.imageUrl),
 
-  image: (slide) => knex
-    .select()
-    .from(slideTypes[slide.type])
+  image: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('image_url', slide.imageUrl)
     .update('text', slide.text),
 
-  tweet: (slide) => knex
-    .select()
-    .from(slideTypes[slide.type])
+  tweet: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('tweet_url', slide.tweetUrl)
     .update('author_name', slide.authorName)
@@ -137,9 +134,7 @@ const updateSlide = {
     .update('image_url', slide.imageUrl)
     .update('publication_date', slide.publicationDate),
 
-  article: (slide) => knex
-    .select()
-    .from(slideTypes[slide.type])
+  article: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('article_url', slide.articleUrl)
     .update('author_name', slide.authorName)
@@ -148,9 +143,7 @@ const updateSlide = {
     .update('source_image', slide.sourceImage)
     .update('text', slide.text),
 
-  callToAction: (slide) => knex
-    .select()
-    .from(slideTypes[slide.type])
+  callToAction: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('title', slide.title)
     .update('subtitle', slide.subtitle)
@@ -159,9 +152,7 @@ const updateSlide = {
     .update('btn_link', slide.btnLink),
 }
 
-const updateSip = (slide) => {
-  return updateSlide[slide.type](slide)
-}
+const updateSlide = (slide) => slideUpdators[slide.type](slide)
 
 module.exports = {
   addSlide,
@@ -170,5 +161,6 @@ module.exports = {
   getSip,
   getSips,
   createSip,
-  updateSip,
+  updateSlide,
+  setSlideImage
 }
