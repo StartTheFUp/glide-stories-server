@@ -116,15 +116,15 @@ const slideUpdators = {
     .where('id', slide.id)
     .update('text', slide.text),
 
-  intro: (slide) => knex(slideTypes[slide.type])
+  intro: (slide) => {
+    console.log(slide)
+    return knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('title', slide.title)
-    .update('subtitle', slide.subtitle)
-    .update('image_url', slide.imageUrl),
+    .update('subtitle', slide.subtitle)},
 
   image: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
-    .update('image_url', slide.imageUrl)
     .update('text', slide.text),
 
   tweet: (slide) => knex(slideTypes[slide.type])
@@ -154,7 +154,9 @@ const slideUpdators = {
     .update('btn_link', slide.btnLink),
 }
 
-const updateSlide = (slide) => slideUpdators[slide.type](slide)
+const updateSlide = (slide) => {
+  return slideUpdators[slide.type](slide)
+}
 
 module.exports = {
   addSlide,

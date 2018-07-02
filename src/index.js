@@ -1,30 +1,30 @@
 const express = require('express')
-const sip = require('./database/mock.json')
 const db = require('./db-knex.js')
 const got = require('got')
 const config = require('./data/twitter_config.js')
-const knex = require('./database/knex.js')
 const aws = require('aws-sdk')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 const metascraper = require('metascraper')
 const Twitter = require('twitter-node-client').Twitter
-
+const bodyParser = require('body-parser')
 const app = express()
 const twitter = new Twitter(config)
 
 aws.config.update({
-    secretAccessKey : '',
-    accessKeyId:'',
-    region : ''
+  secretAccessKey: 'svQm/6UJPrzjgazOYXMcdeaA5BXT7/drD9PcEIZ3',
+  accessKeyId: 'AKIAJHBZMIGCPJ3Q6AEA',
+  region: 'eu-west-3'
 })
 
 const s3 = new aws.S3()
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
-
 
 const getMetadatas = async articleUrl => {
   const { body: html, url } = await got(articleUrl)
@@ -44,19 +44,17 @@ const upload = multer({
     acl: 'public-read',
     bucket: 'websips',
     key: function (req, file, cb) {
-      console.log({ body : req.body })
       cb(null, file.originalname)
     }
   })
 })
 
 app.get('/', (req, res) => {
-    res.json('Hello World !')
-});
+  res.json('Hello World !')
+})
 
 app.post('/slide/:type/:id', upload.array('image', 1), (req, res, next) => {
-  console.log({ body : req.body })
-  console.log({ file : req.files })
+  console.log(req.body)
   const [ { location } ] = req.files
   db.setSlideImage({ type: req.params.type, id: req.params.id, image: location })
     .then(() => res.json({ url: location }))
@@ -181,6 +179,5 @@ app.post('/sips', (req, res, next) => {
     .then(ids => res.json(ids[0]))
     .catch(next)
 })
-
 
 app.listen(5000, () => console.log('Port 5000'))
