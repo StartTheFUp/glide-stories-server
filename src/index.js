@@ -1,18 +1,24 @@
 const express = require('express')
-const app = express()
 const sip = require('./database/mock.json')
 const db = require('./db-knex.js')
 
 const config = require('./data/twitter_config.js')
-const bodyParser = require('body-parser')
-
-// MIDDLEWARES
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-
+const knex = require('./database/knex.js')
+const aws = require('aws-sdk')
+const multer = require('multer')
+const multerS3 = require('multer-s3')
 const Twitter = require('twitter-node-client').Twitter
+
+const app = express()
+const s3 = new aws.S3()
 const twitter = new Twitter(config)
+
+aws.config.update({
+    secretAccessKey : ,
+    accessKeyId: ,
+    region :
+})
+
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
@@ -32,10 +38,27 @@ app.use((req, res, next) => {
   next()
 })
 
-//attention à supprimer
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    acl: 'public-read',
+    bucket: 'websips',
+    key: function (req, file, cb) {
+      console.log({ body : req.body })
+      cb(null, file.originalname)
+    }
+  })
+})
 
 app.get('/', (req, res) => {
-  res.json('hello world')
+    res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/upload', upload.array('upl',1), (req, res, next) => {
+    console.log({ body : req.body })
+    console.log({ file : req.files })
+    res.send("Uploaded!")
 })
 
 const slideHandlers = {
