@@ -14,8 +14,8 @@ const app = express()
 const twitter = new Twitter(config)
 
 aws.config.update({
-    secretAccessKey : 'svQm/6UJPrzjgazOYXMcdeaA5BXT7/drD9PcEIZ3',
-    accessKeyId:'AKIAJHBZMIGCPJ3Q6AEA',
+    secretAccessKey : '',
+    accessKeyId:'',
     region : 'eu-west-3'
 })
 
