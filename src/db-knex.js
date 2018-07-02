@@ -47,6 +47,7 @@ const getSip = async id => {
     .table('sips')
     .where('id', id)
     .first()
+
   sip.slides = (await Promise.all(slideTypesEntries
     .map(async ([type, tableName]) => {
       const slides = await getSlidesBySipId(tableName, id)
@@ -60,6 +61,7 @@ const getSip = async id => {
     .reduce(flatten, [])
     .sort(byOrder)
     .map(camelSnake)
+
   return sip
 }
 
@@ -116,12 +118,10 @@ const slideUpdators = {
     .where('id', slide.id)
     .update('text', slide.text),
 
-  intro: (slide) => {
-    console.log(slide)
-    return knex(slideTypes[slide.type])
+  intro: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
     .update('title', slide.title)
-    .update('subtitle', slide.subtitle)},
+    .update('subtitle', slide.subtitle),
 
   image: (slide) => knex(slideTypes[slide.type])
     .where('id', slide.id)
@@ -151,12 +151,10 @@ const slideUpdators = {
     .update('subtitle', slide.subtitle)
     .update('image_url', slide.imageUrl)
     .update('btn_text', slide.btnText)
-    .update('btn_link', slide.btnLink),
+    .update('btn_link', slide.btnLink)
 }
 
-const updateSlide = (slide) => {
-  return slideUpdators[slide.type](slide)
-}
+const updateSlide = (slide) => slideUpdators[slide.type](slide)
 
 module.exports = {
   addSlide,
