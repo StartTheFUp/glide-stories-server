@@ -1,24 +1,30 @@
 const express = require('express')
-const app = express()
 const sip = require('./database/mock.json')
 const db = require('./db-knex.js')
-
+const got = require('got')
 const config = require('./data/twitter_config.js')
-const bodyParser = require('body-parser')
-
-// MIDDLEWARES
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-
+const knex = require('./database/knex.js')
+const aws = require('aws-sdk')
+const multer = require('multer')
+const multerS3 = require('multer-s3')
+const metascraper = require('metascraper')
 const Twitter = require('twitter-node-client').Twitter
+
+const app = express()
 const twitter = new Twitter(config)
+
+aws.config.update({
+    secretAccessKey : '',
+    accessKeyId:'',
+    region : ''
+})
+
+const s3 = new aws.S3()
+
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
 })
 
-const metascraper = require('metascraper')
-const got = require('got')
 
 const getMetadatas = async articleUrl => {
   const { body: html, url } = await got(articleUrl)
@@ -32,10 +38,29 @@ app.use((req, res, next) => {
   next()
 })
 
-// attention à supprimer
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    acl: 'public-read',
+    bucket: 'websips',
+    key: function (req, file, cb) {
+      console.log({ body : req.body })
+      cb(null, file.originalname)
+    }
+  })
+})
 
 app.get('/', (req, res) => {
-  res.json('hello world')
+    res.json('Hello World !')
+});
+
+app.post('/slide/:type/:id', upload.array('image', 1), (req, res, next) => {
+  console.log({ body : req.body })
+  console.log({ file : req.files })
+  const [ { location } ] = req.files
+  db.setSlideImage({ type: req.params.type, id: req.params.id, image: location })
+    .then(() => res.json({ url: location }))
+    .catch(next)
 })
 
 const slideHandlers = {
@@ -110,20 +135,27 @@ app.post('/slides', (req, res, next) => {
 })
 
 app.post('/slides/:id', (req, res, next) => {
-  // update
+  db.updateSlide({
+    id: req.params.id,
+    ...req.body
+  })
+    .then(() => res.json('ok'))
+    .catch(next)
 })
 
 app.delete('/slides/:id', (req, res, next) => {
   // delete
 })
 
-app.get('/mock', (req, res) => {
-  res.json(sip)
-})
-
 app.get('/sips', (req, res, next) => {
   db.getSips()
     .then(sips => res.json(sips))
+    .catch(next)
+})
+
+app.get('/preview', (req, res, next) => {
+  db.getSlidesIntro()
+    .then(slideintro => res.send(slideintro))
     .catch(next)
 })
 
@@ -149,5 +181,6 @@ app.post('/sips', (req, res, next) => {
     .then(ids => res.json(ids[0]))
     .catch(next)
 })
+
 
 app.listen(5000, () => console.log('Port 5000'))

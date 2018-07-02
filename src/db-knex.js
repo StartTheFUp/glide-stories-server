@@ -47,7 +47,6 @@ const getSip = async id => {
     .table('sips')
     .where('id', id)
     .first()
-
   sip.slides = (await Promise.all(slideTypesEntries
     .map(async ([type, tableName]) => {
       const slides = await getSlidesBySipId(tableName, id)
@@ -61,7 +60,6 @@ const getSip = async id => {
     .reduce(flatten, [])
     .sort(byOrder)
     .map(camelSnake)
-
   return sip
 }
 
@@ -85,7 +83,6 @@ getSipOrder(1) // not used for now
     })))
     .reduce(flatten, []))
   .map(camelSnake)
-  // .then(console.log)
 
 const addSlide = (slideType, slide) => knex(slideType).insert(slide)
 
@@ -110,6 +107,55 @@ const createSip = title => knex
   })
   .into('sips')
 
+const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
+  .where('id', id)
+  .update('image_url', image)
+
+const slideUpdators = {
+  text: (slide) => knex(slideTypes[slide.type])
+    .where('id', slide.id)
+    .update('text', slide.text),
+
+  intro: (slide) => knex(slideTypes[slide.type])
+    .where('id', slide.id)
+    .update('title', slide.title)
+    .update('subtitle', slide.subtitle)
+    .update('image_url', slide.imageUrl),
+
+  image: (slide) => knex(slideTypes[slide.type])
+    .where('id', slide.id)
+    .update('image_url', slide.imageUrl)
+    .update('text', slide.text),
+
+  tweet: (slide) => knex(slideTypes[slide.type])
+    .where('id', slide.id)
+    .update('tweet_url', slide.tweetUrl)
+    .update('author_name', slide.authorName)
+    .update('author_screen_name', slide.authorScreenName)
+    .update('text', slide.text)
+    .update('image_url', slide.imageUrl)
+    .update('publication_date', slide.publicationDate),
+
+  article: (slide) => knex(slideTypes[slide.type])
+    .where('id', slide.id)
+    .update('article_url', slide.articleUrl)
+    .update('author_name', slide.authorName)
+    .update('publication_date', slide.publicationDate)
+    .update('source_name', slide.source)
+    .update('source_image', slide.sourceImage)
+    .update('text', slide.text),
+
+  callToAction: (slide) => knex(slideTypes[slide.type])
+    .where('id', slide.id)
+    .update('title', slide.title)
+    .update('subtitle', slide.subtitle)
+    .update('image_url', slide.imageUrl)
+    .update('btn_text', slide.btnText)
+    .update('btn_link', slide.btnLink),
+}
+
+const updateSlide = (slide) => slideUpdators[slide.type](slide)
+
 module.exports = {
   addSlide,
   addTweetSlide,
@@ -117,5 +163,7 @@ module.exports = {
   getSip,
   getSips,
   createSip,
+  updateSlide,
+  setSlideImage,
   updateSipOrder
 }

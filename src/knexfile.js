@@ -4,7 +4,9 @@ module.exports = {
     client: 'postgresql',
     connection: {
       charset: 'utf8',
-      database: 'websips'
+      database: 'websips',
+      user: 'chtira',
+      password: 'chtira'
     },
     migrations: {
       directory: path.join(__dirname, '/migrations')

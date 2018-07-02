@@ -16,10 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.266.1",
     "express": "^4.16.3",
     "knex": "^0.14.6",
     "lodash": "^4.17.10",
     "metascraper": "^3.11.6",
+    "multer": "^1.3.1",
+    "multer-s3": "^2.7.0",
     "nodemon": "^1.17.5",
     "pg": "^7.4.3",
     "snazzy": "^7.1.1",
