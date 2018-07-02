@@ -9,11 +9,11 @@ exports.seed = (knex, Promise) => {
           id: 1,
           created_at: new Date(),
           publication_date: 'Tue Jun 13 13:03:00 +0000 2018',
-          article_url: 'https://twitter.com/languesFR/status/1006479461108338689',
-          source_image: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
-          source_name: 'Le monde',
-          author_name: 'Alex kfjie',
-          text: '#CloudGateDance \'des instants d’une rare poésie\' via @sceneweb https://t.co/dMDvRAZKqo https://t.co/oIpgAt8yQx',
+          article_url: 'http://www.elle.fr/People/La-vie-des-people/News/Johnny-Hallyday-les-fans-rassembles-a-la-Madeleine-pour-les-75-ans-du-rockeur',
+          source_image: 'http://cdn-elle.ladmedia.fr/design/elle2/images/apple/touch-icon-ipad-retina.png',
+          source_name: 'Elle',
+          author_name: 'Elodie Petit',
+          text: 'Type your extract here',
           sip_id: 1
         },
         {

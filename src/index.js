@@ -38,7 +38,6 @@ app.use((req, res, next) => {
   next()
 })
 
-
 const upload = multer({
   storage: multerS3({
     s3: s3,
@@ -65,14 +64,14 @@ app.post('/slide/:type/:id', upload.array('image', 1), (req, res, next) => {
 })
 
 const slideHandlers = {
-  tweet: ({ type, sipId, tweetUrl }) => {
-    const tweetId = tweetUrl.split('/').slice(-1).join('')
+  tweet: ({ sipId, url }) => {
+    const tweetId = url.split('/').slice(-1).join('')
 
     return getTweet(tweetId)
       .then(JSON.parse)
       .then(tweet => db.addTweetSlide({
         publication_date: tweet.created_at,
-        tweet_url: tweetUrl,
+        tweet_url: url,
         image_url: tweet.user.profile_image_url_https,
         author_name: tweet.user.name,
         author_screen_name: tweet.user.screen_name,
@@ -80,9 +79,9 @@ const slideHandlers = {
         sip_id: sipId
       }))
   },
-  article: ({ type, sipId, articleUrl}) => {
-    return getMetadatas(articleUrl)
-       .then(metadatas => db.addArticleQuoteSlide({
+  article: ({ sipId, url }) => {
+    return getMetadatas(url)
+      .then(metadatas => db.addArticleQuoteSlide({
         article_url: metadatas.url,
         author_name: metadatas.author,
         source_name: metadatas.publisher,
@@ -125,9 +124,8 @@ const slideHandlers = {
       sip_id: sipId,
       created_at: new Date()
     })
-  },
+  }
 }
-
 
 app.post('/slides', (req, res, next) => {
   // create
@@ -151,7 +149,7 @@ app.delete('/slides/:id', (req, res, next) => {
 
 app.get('/sips', (req, res, next) => {
   db.getSips()
-    .then(sips => res.send(sips))
+    .then(sips => res.json(sips))
     .catch(next)
 })
 
@@ -164,6 +162,17 @@ app.get('/preview', (req, res, next) => {
 app.get('/sips/:id', (req, res, next) => {
   db.getSip(req.params.id)
     .then(sip => res.json(sip))
+    .catch(next)
+})
+
+app.post('/sips/:id', (req, res, next) => {
+  // update sip order
+  const id = req.params.id
+  const order = req.body.order
+  console.log(order)
+
+  db.updateSipOrder(id, order)
+    .then(() => res.json('OK'))
     .catch(next)
 })
 

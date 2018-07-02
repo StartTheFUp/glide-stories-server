@@ -12,6 +12,9 @@ const slideTypes = {
 const slideTypesEntries = Object.entries(slideTypes)
 
 const camelSnake = obj => _.mapKeys(obj, (value, key) => _.camelCase(key))
+
+// const camelSnake = fp.mapKeys((value, key) => _.camelCase(key))
+
 /*
 
 const dbTypesToJS = jsTypesToDB)
@@ -67,7 +70,11 @@ const getSipOrder = id => knex
   .from('sips')
   .where('id', id)
 
-getSipOrder(1)
+const updateSipOrder = (id, data) => knex('sips')
+  .where('id', id)
+  .update('order', data)
+
+getSipOrder(1) // not used for now
   .then(async sipOrder => (await Promise.all(sipOrder
     .map(order => order.order)
     .join(' ')
@@ -90,7 +97,7 @@ const addTweetSlide = slide => {
 
 const addArticleQuoteSlide = slide => {
   slide.created_at = new Date()
-
+  console.log(slide)
   return addSlide('slides_article_quote', slide)
 }
 
@@ -161,4 +168,5 @@ module.exports = {
   createSip,
   updateSlide,
   setSlideImage
+  updateSipOrder
 }
