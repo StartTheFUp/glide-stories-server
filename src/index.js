@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   next()
 })
 
-//attention à supprimer 
+// attention à supprimer
 
 app.get('/', (req, res) => {
   res.json('hello world')
@@ -54,9 +54,9 @@ const slideHandlers = {
         sip_id: sipId
       }))
   },
-  article: ({ sipId, url}) => {
+  article: ({ sipId, url }) => {
     return getMetadatas(url)
-       .then(metadatas => db.addArticleQuoteSlide({
+      .then(metadatas => db.addArticleQuoteSlide({
         article_url: metadatas.url,
         author_name: metadatas.author,
         source_name: metadatas.publisher,
@@ -99,9 +99,8 @@ const slideHandlers = {
       sip_id: sipId,
       created_at: new Date()
     })
-  },
+  }
 }
-
 
 app.post('/slides', (req, res, next) => {
   // create
