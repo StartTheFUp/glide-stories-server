@@ -5,8 +5,6 @@ module.exports = {
     connection: {
       charset: 'utf8',
       database: 'websips',
-      user: 'chtira',
-      password: 'chtira'
     },
     migrations: {
       directory: path.join(__dirname, '/migrations')
