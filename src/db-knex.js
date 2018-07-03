@@ -18,11 +18,6 @@ const getSlidesBySipId = (type, id) => knex
   .table(type)
   .where('sip_id', id)
 
-const getSlideById = (slideType, slideId) => knex
-  .select()
-  .table(slideType)
-  .where('id', slideId)
-
 const flatten = (a, b) => a.concat(b)
 const byOrder = (a, b) => a.order - b.order
 
