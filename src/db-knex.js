@@ -77,6 +77,16 @@ const updateSlide = ({ type, id }, params) => knex(slideTypes[type])
   .where('id', id)
   .update(params)
 
+const createUser = params => knex
+  .returning('id')
+  .insert(params)
+  .into('users')
+
+const getUserByEmail = email => knex('users')
+  .select()
+  .where('email', email)
+  .first()
+
 module.exports = {
   createSlide,
   updateSlide,
@@ -85,5 +95,7 @@ module.exports = {
   createSip,
   getPreview,
   setSlideImage,
-  updateSipOrder
+  updateSipOrder,
+  getUserByEmail,
+  createUser
 }
