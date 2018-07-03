@@ -70,9 +70,9 @@ const getSipOrder = id => knex
   .from('sips')
   .where('id', id)
 
-const updateSipOrder = (id, data) => knex('sips')
+const updateSipOrder = ({ id, order }) => knex('sips')
   .where('id', id)
-  .update('order', data)
+  .update('order', order)
 
 getSipOrder(1) // not used for now
   .then(async sipOrder => (await Promise.all(sipOrder
@@ -86,20 +86,9 @@ getSipOrder(1) // not used for now
     .reduce(flatten, []))
   .map(camelSnake)
 
-const addSlide = (slideType, slide) => knex(slideType).insert(slide)
-
-const addTweetSlide = slide => {
-  // id generated automatically with auto increment
-  slide.created_at = new Date()
-
-  return addSlide('slides_tweet_quote', slide)
-}
-
-const addArticleQuoteSlide = slide => {
-  slide.created_at = new Date()
-  console.log(slide)
-  return addSlide('slides_article_quote', slide)
-}
+const createSlide = ({ type }, params) => knex(slideTypes[type])
+  .returning('id')
+  .insert(params)
 
 const createSip = title => knex
   .returning('id')
@@ -113,53 +102,12 @@ const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
   .where('id', id)
   .update('image_url', image)
 
-const slideUpdators = {
-  text: (slide) => knex(slideTypes[slide.type])
-    .where('id', slide.id)
-    .update('text', slide.text),
-
-  intro: (slide) => knex(slideTypes[slide.type])
-    .where('id', slide.id)
-    .update('title', slide.title)
-    .update('subtitle', slide.subtitle),
-
-  image: (slide) => knex(slideTypes[slide.type])
-    .where('id', slide.id)
-    .update('text', slide.text),
-
-  tweet: (slide) => knex(slideTypes[slide.type])
-    .where('id', slide.id)
-    .update('tweet_url', slide.tweetUrl)
-    .update('author_name', slide.authorName)
-    .update('author_screen_name', slide.authorScreenName)
-    .update('text', slide.text)
-    .update('image_url', slide.imageUrl)
-    .update('publication_date', slide.publicationDate),
-
-  article: (slide) => knex(slideTypes[slide.type])
-    .where('id', slide.id)
-    .update('article_url', slide.articleUrl)
-    .update('author_name', slide.authorName)
-    .update('publication_date', slide.publicationDate)
-    .update('source_name', slide.source)
-    .update('source_image', slide.sourceImage)
-    .update('text', slide.text),
-
-  callToAction: (slide) => knex(slideTypes[slide.type])
-    .where('id', slide.id)
-    .update('title', slide.title)
-    .update('subtitle', slide.subtitle)
-    .update('image_url', slide.imageUrl)
-    .update('btn_text', slide.btnText)
-    .update('btn_link', slide.btnLink)
-}
-
-const updateSlide = (slide) => slideUpdators[slide.type](slide)
+const updateSlide = ({ type, id }, params) => knex(slideTypes[type])
+  .where('id', id)
+  .update(params)
 
 module.exports = {
-  addSlide,
-  addTweetSlide,
-  addArticleQuoteSlide,
+  createSlide,
   getSip,
   getSips,
   createSip,
