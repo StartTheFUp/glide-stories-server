@@ -62,7 +62,7 @@ const slideHandlers = {
       sip_id: sipId,
       created_at: new Date()
     }),
-    update: ({ title, subtitle }) => ({ title, subtitle }),
+    update: ({ title, subtitle }) => ({ title, subtitle })
   },
 
   text: {
@@ -71,7 +71,7 @@ const slideHandlers = {
       sip_id: sipId,
       created_at: new Date()
     }),
-    update: ({ text }) => ({ text }),
+    update: ({ text }) => ({ text })
   },
 
   image: {
@@ -81,7 +81,7 @@ const slideHandlers = {
       sip_id: sipId,
       created_at: new Date()
     }),
-    update: ({ text }) => ({ text }),
+    update: ({ text }) => ({ text })
   },
 
   tweet: {
@@ -105,8 +105,8 @@ const slideHandlers = {
       author_screen_name: slide.authorScreenName,
       text: slide.text,
       image_url: slide.imageUrl,
-      publication_date: slide.publicationDate,
-    }),
+      publication_date: slide.publicationDate
+    })
   },
 
   article: {
@@ -129,8 +129,8 @@ const slideHandlers = {
       publication_date: slide.publicationDate,
       source_name: slide.source,
       source_image: slide.sourceImage,
-      text: slide.text,
-    }),
+      text: slide.text
+    })
   },
 
   callToAction: {
@@ -148,7 +148,7 @@ const slideHandlers = {
       subtitle: slide.subtitle,
       image_url: slide.imageUrl,
       btn_text: slide.btnText,
-      btn_link: slide.btnLink,
+      btn_link: slide.btnLink
     })
   }
 }
