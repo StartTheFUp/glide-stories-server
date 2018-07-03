@@ -153,40 +153,9 @@ const slideHandlers = {
   }
 }
 
-app.post('/slides', (req, res, next) => {
-  // create
-  slideHandlers[req.body.type](req.body)
-    .then(() => res.json('ok'))
-    .catch(next)
-})
-
-app.post('/slides/:id', (req, res, next) => {
-  // update
-})
-
-app.delete('/slides/:id', (req, res, next) => {
-  // delete
-})
-
-app.get('/mock', (req, res) => {
-  res.json(sip)
-})
-
-app.get('/sips', (req, res, next) => {
-  db.getSips()
-    .then(sips => res.send(sips))
-    .catch(next)
-})
-
 app.get('/preview', (req, res, next) => {
   db.getPreview()
     .then(preview => res.send(preview))
-    .catch(next)
-})
-
-app.get('/sips/:id', (req, res, next) => {
-  db.getSip(req.params.id)
-    .then(sip => res.json(sip))
     .catch(next)
 })
 
