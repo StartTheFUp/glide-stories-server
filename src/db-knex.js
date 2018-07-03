@@ -12,31 +12,14 @@ const slideTypes = {
 const slideTypesEntries = Object.entries(slideTypes)
 
 const camelSnake = obj => _.mapKeys(obj, (value, key) => _.camelCase(key))
-/*
-
-const dbTypesToJS = jsTypesToDB)
-  .reduce((acc, [value, key]) => {
-    acc[key] = value
-    return acc
-  }, {})
-
-const slideTypeValues = Object.values(jsTypesToDB)
-*/
 
 const getSlidesBySipId = (type, id) => knex
   .select()
   .table(type)
   .where('sip_id', id)
 
-const getSlideById = (slideType, slideId) => knex
-  .select()
-  .table(slideType)
-  .where('id', slideId)
-
 const flatten = (a, b) => a.concat(b)
 const byOrder = (a, b) => a.order - b.order
-
-const getSips = () => knex.select().from('sips')
 
 const getSip = async id => {
   const { order, ...sip } = await knex
@@ -62,49 +45,21 @@ const getSip = async id => {
   return sip
 }
 
+const getSips = () => knex.select().from('sips')
+
 const getPreview = () => knex
   .select('sips.*', 'slides_intro.title AS slidesIntroTitle', 'slides_intro.created_at AS slidesIntroCreatedAt', 'slides_intro.subtitle', 'slides_intro.image_url')
   .from('slides_intro')
   .innerJoin('sips','sips.id', 'slides_intro.sip_id' )
   .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map).values() ])
- // .select('sips.id', 'sips.title', 'sips.created_at', 'slides_intro.sip_id', 'slides_intro.created_at', 'slides_intro.title', 'slides_intro.subtitle', 'slides_intro.image_url')
 
-// const getSipPreview = () => knex
-//   .select('order')
-//   .from('sips')
-
-const getSipOrder = id => knex
-  .select('order')
-  .from('sips')
+const updateSipOrder = ({ id, order }) => knex('sips')
   .where('id', id)
+  .update('order', order)
 
-getSipOrder(1)
-  .then(async sipOrder => (await Promise.all(sipOrder
-    .map(order => order.order)
-    .join(' ')
-    .split(' ')
-    .map(slide => {
-      const [ type, id ] = slide.split('-')
-      return getSlideById(slideTypes[type], id)
-    })))
-    .reduce(flatten, []))
-  .map(camelSnake)
-  // .then(console.log)
-
-const addSlide = (slideType, slide) => knex(slideType).insert(slide)
-
-const addTweetSlide = slide => {
-  // id generated automatically with auto increment
-  slide.created_at = new Date()
-
-  return addSlide('slides_tweet_quote', slide)
-}
-
-const addArticleQuoteSlide = slide => {
-  slide.created_at = new Date()
-
-  return addSlide('slides_article_quote', slide)
-}
+const createSlide = ({ type }, params) => knex(slideTypes[type])
+  .returning('id')
+  .insert(params)
 
 const createSip = title => knex
   .returning('id')
@@ -114,12 +69,21 @@ const createSip = title => knex
   })
   .into('sips')
 
+const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
+  .where('id', id)
+  .update('image_url', image)
+
+const updateSlide = ({ type, id }, params) => knex(slideTypes[type])
+  .where('id', id)
+  .update(params)
+
 module.exports = {
-  addSlide,
-  addTweetSlide,
-  addArticleQuoteSlide,
+  createSlide,
+  updateSlide,
   getSip,
   getSips,
   createSip,
-  getPreview
+  getPreview,
+  setSlideImage,
+  updateSipOrder
 }
