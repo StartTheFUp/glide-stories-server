@@ -50,8 +50,8 @@ const getSips = () => knex.select().from('sips')
 const getPreview = () => knex
   .select('sips.*', 'slides_intro.title AS slidesIntroTitle', 'slides_intro.created_at AS slidesIntroCreatedAt', 'slides_intro.subtitle', 'slides_intro.image_url')
   .from('slides_intro')
-  .innerJoin('sips','sips.id', 'slides_intro.sip_id' )
-  .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map).values() ])
+  .innerJoin('sips', 'sips.id', 'slides_intro.sip_id')
+  .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map()).values() ])
 
 const updateSipOrder = ({ id, order }) => knex('sips')
   .where('id', id)
