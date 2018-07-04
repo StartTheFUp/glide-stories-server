@@ -36,24 +36,22 @@ const tokenParser = (req, res, next) => {
 const requireToken = (req, res, next) =>
   next(req.token ? null : Error('forbidden'))
 
-const setToken = (res, email) => res.set('x-access-token', jwt.sign({ email }, SECRET))
 const createUser = async (req, res) => {
   const password = await bcrypt.hash(req.body.password, 9)
   const { email } = req.body
-  await db.createUser({ password, email })
-  setToken(res, email)
-  return { message: 'account created' }
+  const [ id ] = await db.createUser({ password, email })
+  return { message: 'account created', token: jwt.sign({ email, id }, SECRET) }
 }
 
 // Highway to hell
-const login = (req, res) => new Promise((s, f) =>
+const login = (req, res) => new Promise((resolve, reject) =>
   passport.authenticate('local', { session: false }, (authErr, user, info) => {
-    if (authErr) return f(authErr)
-    if (!user) return f(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
+    if (authErr) return reject(authErr)
+    if (!user) return reject(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
     return req.login(user, { session: false }, loginErr => {
-      if (loginErr) return f(loginErr)
-      setToken(res, user.email)
-      s({ message: 'login successfull' })
+      if (loginErr) return reject(loginErr)
+      const { email, id } = user
+      resolve({ message: 'login successfull', token: jwt.sign({ email, id }, SECRET) })
     })
   })(req, res))
 
