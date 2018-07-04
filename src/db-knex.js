@@ -72,7 +72,7 @@ const createSip = async title => {
       title,
       subtitle: '',
       image_url: '',
-      sip_id: sipId,
+      sip_id: sipId
     })
     .into('slides_intro')
 

@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const SECRET = process.env.SECRET || 'pouet2'
 const localOpts = {
   usernameField: 'email',
-  passwordField: 'password',
+  passwordField: 'password'
 }
 
 const loginError = { message: 'Incorrect email or password.' }
