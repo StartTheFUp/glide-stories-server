@@ -151,12 +151,6 @@ const slideHandlers = {
   }
 }
 
-app.get('/preview', (req, res, next) => {
-  db.getPreview()
-    .then(preview => res.send(preview))
-    .catch(next)
-})
-
 app.post('/slide/:type/:id', upload.array('image', 1), awaitRoute(async req => {
   const [ { location } ] = req.files
   await db.setSlideImage({
@@ -182,17 +176,14 @@ app.post('/slides/:id', awaitRoute(async req => {
 }))
 
 app.delete('/slides/:id', awaitRoute(async () => {}))
-app.get('/sips', awaitRoute(db.getSips))
+app.get('/sips', awaitRoute(req => db.getSips(req.token.id)))
 app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
 app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
   ...req.params,
   ...req.body
 })))
 
-app.post('/sips', awaitRoute(async req => {
-  const [ id ] = await db.createSip(req.body.title)
-  return id
-}))
+app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
 
 app.post('/users', awaitRoute(authLocal.createUser))
 app.post('/auth/local', awaitRoute(authLocal.login))
