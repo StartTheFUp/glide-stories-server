@@ -60,13 +60,33 @@ const createSlide = ({ type }, params) => knex(slideTypes[type])
   .returning('id')
   .insert(params)
 
-const createSip = title => knex
-  .returning('id')
-  .insert({
-    title: title,
-    order: ''
-  })
-  .into('sips')
+const createSip = async title => {
+  const [ sipId ] = await knex
+    .returning('id')
+    .insert('title', title)
+    .into('sips')
+
+  const [ id ] = await knex
+    .returning('id')
+    .insert({
+      title,
+      subtitle: '',
+      image_url: '',
+      sip_id: sipId,
+    })
+    .into('slides_intro')
+
+  const uid = `intro-${id}`
+  await knex('sips')
+    .where('id', sipId)
+    .update('order', uid)
+
+  return {
+    id: sipId
+    title,
+    slides: [ { id, uid, sipId, title } ]
+  }
+}
 
 const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
   .where('id', id)
