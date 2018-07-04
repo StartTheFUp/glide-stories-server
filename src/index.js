@@ -9,6 +9,7 @@ const multerS3 = require('multer-s3')
 const metascraper = require('metascraper')
 const Twitter = require('twitter-node-client').Twitter
 const bodyParser = require('body-parser')
+const path = require('path')
 const app = express()
 const twitter = new Twitter(config)
 
