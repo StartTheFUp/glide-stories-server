@@ -177,7 +177,7 @@ app.post('/slides/:id', awaitRoute(async req => {
 }))
 
 app.delete('/slides/:id', awaitRoute(async () => {}))
-app.get('/sips', awaitRoute(req => db.getSips(req.token.id)))
+app.get('/sips', awaitRoute(req => db.getSips(req.token && req.token.id)))
 app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
 app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
   ...req.params,

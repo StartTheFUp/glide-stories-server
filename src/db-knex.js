@@ -82,7 +82,7 @@ const createSip = async title => {
     .update('order', uid)
 
   return {
-    id: sipId
+    id: sipId,
     title,
     slides: [ { id, uid, sipId, title } ]
   }
