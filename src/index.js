@@ -163,14 +163,26 @@ const slideHandlers = {
   }
 }
 
-app.post('/slide/:type/:id', upload.array('image', 1), awaitRoute(async req => {
-  const [ { location } ] = req.files
-  await db.setSlideImage({
-    type: req.params.type,
-    id: req.params.id,
-    image: location
+app.post('/slide/:type/:id', awaitRoute(async (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      console.log('there is an error', err)
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.json({error: 'file too big'})
+      }
+      if (req.fileValidationError) {
+        return res.json({ error: 'Invalid type file' })
+      }
+    }
+
+    const [ { location } ] = req.files
+    db.setSlideImage({
+      type: req.params.type,
+      id: req.params.id,
+      image: location
+    })
+      .then(() => res.json({ url: location }))
   })
-  return { url: location }
 }))
 
 app.post('/slides', awaitRoute(async req => {
