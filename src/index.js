@@ -139,7 +139,7 @@ const slideHandlers = {
       image_url: '',
       btn_text: '',
       btn_link: '',
-      sip_id: sipId,
+      sip_id: sipId
     }),
     update: slide => ({
       title: slide.title,

@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const SECRET = process.env.SECRET || 'pouet2'
 const localOpts = {
   usernameField: 'email',
-  passwordField: 'password',
+  passwordField: 'password'
 }
 
 const loginError = { message: 'Incorrect email or password.' }
@@ -44,14 +44,14 @@ const createUser = async (req, res) => {
 }
 
 // Highway to hell
-const login = (req, res) => new Promise((s, f) =>
+const login = (req, res) => new Promise((resolve, reject) =>
   passport.authenticate('local', { session: false }, (authErr, user, info) => {
-    if (authErr) return f(authErr)
-    if (!user) return f(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
+    if (authErr) return reject(authErr)
+    if (!user) return reject(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
     return req.login(user, { session: false }, loginErr => {
-      if (loginErr) return f(loginErr)
+      if (loginErr) return reject(loginErr)
       const { email, id } = user
-      s({ message: 'login successfull', token: jwt.sign({ email, id }, SECRET) })
+      resolve({ message: 'login successfull', token: jwt.sign({ email, id }, SECRET) })
     })
   })(req, res))
 
