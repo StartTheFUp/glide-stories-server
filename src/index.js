@@ -42,7 +42,7 @@ const awaitRoute = routeHandler => async (req, res, next) => {
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin)
   res.header('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept')
+    'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token')
   next()
 })
 
@@ -188,5 +188,13 @@ app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
 
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
+
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(500).json({ error: err.message })
+  } else {
+    res.status(404).json({ error: 'Not Found' })
+  }
+})
 
 app.listen(5000, () => console.log('Port 5000'))
