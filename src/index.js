@@ -59,8 +59,7 @@ const slideHandlers = {
       title: '',
       subtitle: '',
       image_url: '',
-      sip_id: sipId,
-      created_at: new Date()
+      sip_id: sipId
     }),
     update: ({ title, subtitle }) => ({ title, subtitle })
   },
@@ -68,8 +67,7 @@ const slideHandlers = {
   text: {
     create: ({ sipId }) => ({
       text: '',
-      sip_id: sipId,
-      created_at: new Date()
+      sip_id: sipId
     }),
     update: ({ text }) => ({ text })
   },
@@ -78,8 +76,7 @@ const slideHandlers = {
     create: ({ sipId }) => ({
       text: '',
       image_url: '',
-      sip_id: sipId,
-      created_at: new Date()
+      sip_id: sipId
     }),
     update: ({ text }) => ({ text })
   },
