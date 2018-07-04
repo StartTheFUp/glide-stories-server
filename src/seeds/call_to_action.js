@@ -28,11 +28,11 @@ exports.seed = (knex, Promise) => {
         {
           id: 3,
           created_at: new Date(),
-          title: 'Buying GitHub Would Take Microsoft...',
-          image_url: 'http://cosmetotheque.com/wp-content/uploads/2018/04/mario-gogh-589733-unsplash-1200x385.jpg',
-          subtitle: 'Back to Its Root',
-          btn_text: 'More info',
-          btn_link: 'http://google.fr',
+          title: 'Test titre 3',
+          image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
+          subtitle: 'test sous titre 3',
+          btn_text: 'test btn3',
+          btn_link: 'https://twitter.com/languesFR/status/1006479461108338689',
           sip_id: 1
         }
       ])

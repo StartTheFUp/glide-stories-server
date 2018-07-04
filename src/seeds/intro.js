@@ -8,9 +8,9 @@ exports.seed = (knex, Promise) => {
         {
           id: 1,
           created_at: new Date(),
-          title: 'Art review',
-          image_url: 'http://cosmetotheque.com/wp-content/uploads/2018/04/mario-gogh-589733-unsplash-1200x385.jpg',
-          subtitle: 'Life in Motion — Egon Schiele and Francesca Woodman, Tate Liverpool',
+          title: 'Test titre',
+          image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
+          subtitle: 'test sous titre',
           sip_id: 1
         },
         {
