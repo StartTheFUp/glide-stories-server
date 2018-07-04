@@ -22,21 +22,19 @@ passport.use(new LocalStrategy(localOpts, (email, password, next) => {
     }, next)
 }))
 
-const verifyJWT = (req, res, next) => {
+const tokenParser = (req, res, next) => {
   const token = req.headers['x-access-token']
-  if (token) {
-    jwt.verify(token, SECRET, (err, decoded) => {
-      if (err) {
-        next(err)
-      } else {
-        req.token = decoded
-        next()
-      }
-    })
-  } else {
-    next(Error('forbidden'))
-  }
+  if (!token) return next()
+  jwt.verify(token, SECRET, (err, decoded) => {
+    if (!err) {
+      req.token = decoded
+    }
+    next()
+  })
 }
+
+const requireToken = (req, res, next) =>
+  next(req.token ? null : Error('forbidden'))
 
 const setToken = (res, email) => res.set('x-access-token', jwt.sign({ email }, SECRET))
 const createUser = async (req, res) => {
@@ -62,5 +60,6 @@ const login = (req, res) => new Promise((s, f) =>
 module.exports = {
   login,
   createUser,
-  verifyJWT
+  tokenParser,
+  requireToken
 }

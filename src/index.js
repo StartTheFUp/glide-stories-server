@@ -2,7 +2,7 @@ const express = require('express')
 const db = require('./db-knex.js')
 const got = require('got')
 const config = require('./data/twitter_config.js')
-const authLocal = require('./auth/local.js')
+const auth = require('./auth/local.js')
 const aws = require('aws-sdk')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
@@ -22,6 +22,7 @@ const s3 = new aws.S3()
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(auth.tokenParser)
 
 const getTweet = id => new Promise((resolve, reject) => {
   twitter.getTweet({ id }, reject, resolve)
@@ -185,7 +186,7 @@ app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
 
 app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
 
-app.post('/users', awaitRoute(authLocal.createUser))
-app.post('/auth/local', awaitRoute(authLocal.login))
+app.post('/users', awaitRoute(auth.createUser))
+app.post('/auth/local', awaitRoute(auth.login))
 
 app.listen(5000, () => console.log('Port 5000'))
