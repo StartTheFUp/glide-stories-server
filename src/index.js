@@ -140,7 +140,6 @@ const slideHandlers = {
       btn_text: '',
       btn_link: '',
       sip_id: sipId,
-      created_at: new Date()
     }),
     update: slide => ({
       title: slide.title,
