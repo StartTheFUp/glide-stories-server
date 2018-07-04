@@ -85,5 +85,6 @@ module.exports = {
   createSip,
   getPreview,
   setSlideImage,
-  updateSipOrder
+  updateSipOrder,
+  camelSnake
 }

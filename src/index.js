@@ -173,7 +173,7 @@ app.post('/slides', awaitRoute(async req => {
   const slide = req.body
   const params = await slideHandlers[slide.type].create(slide)
   const [ id ] = await db.createSlide(slide, params)
-  return id
+  return { id, ...db.camelSnake(params) }
 }))
 
 app.post('/slides/:id', awaitRoute(async req => {
