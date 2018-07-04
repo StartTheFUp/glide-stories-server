@@ -53,8 +53,19 @@ const upload = multer({
     acl: 'public-read',
     bucket: 'websips',
     key: (req, file, cb) => cb(null, file.originalname)
-  })
-})
+  }),
+  fileFilter: (req, file, cb) => { // accepts only images
+    const ext = path.extname(file.originalname).toLowerCase()
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+      req.fileValidationError = 'invalid file type'
+      return cb(new Error('invalid file type'), false)
+    }
+    cb(null, true)
+  },
+  limits: { // limited at 5 Mo
+    fileSize: 5000000
+  }
+}).array('image', 1)
 
 const slideHandlers = {
   intro: {
