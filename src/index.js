@@ -217,6 +217,13 @@ app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
 
 app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
 
+app.delete('/sips/:id', awaitRoute(async (req) => {
+  const id = Number(req.params.id)
+  await db.deleteSip(id)
+
+  return 'deleted'
+}))
+
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
 
