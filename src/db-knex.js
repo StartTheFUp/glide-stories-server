@@ -47,7 +47,7 @@ const getSip = async id => {
 
 const getSips = userId => knex
   .select('sips.*',
-    'slides_intro.title AS slidesIntroTitle',
+     ' slides_intro.title AS slidesIntroTitle',
     'slides_intro.created_at AS slidesIntroCreatedAt',
     'slides_intro.subtitle',
     'slides_intro.image_url')
