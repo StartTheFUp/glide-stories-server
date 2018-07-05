@@ -42,6 +42,7 @@ const awaitRoute = routeHandler => async (req, res, next) => {
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.headers.origin)
+  res.header('Access-Control-Allow-Methods', '*')
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token')
   next()
