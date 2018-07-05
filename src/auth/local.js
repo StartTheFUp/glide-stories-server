@@ -36,12 +36,28 @@ const tokenParser = (req, res, next) => {
 const requireToken = (req, res, next) =>
   next(req.token ? null : Error('forbidden'))
 
-const createUser = async (req, res) => {
-  const password = await bcrypt.hash(req.body.password, 9)
-  const { email } = req.body
-  const [ id ] = await db.createUser({ password, email })
-  return { message: 'account created', token: jwt.sign({ email, id }, SECRET) }
-}
+  const createUser = async (req, res) => {
+    console.log(req.token)
+    if (req.token) {
+      const params = { id: req.token.id }
+      if (req.body.password) {
+        params.password = await bcrypt.hash(req.body.password, 9)
+      }
+      if (req.body.email) {
+        params.email = req.body.email
+        await db.updateUser(params)
+        return { message: 'account updated', token: jwt.sign({ email: params.email, id }, SECRET) }
+      } else {
+        await db.updateUser(params)
+        return { message: 'account updated', token: req.headers['x-access-token'] }
+      }
+    } else {
+      const password = await bcrypt.hash(req.body.password, 9)
+      const { email } = req.body
+      const [ id ] = await db.createUser({ password, email })
+      return { message: 'account created', token: jwt.sign({ email, id }, SECRET) }
+    }
+  }
 
 // Highway to hell
 const login = (req, res) => new Promise((resolve, reject) =>
