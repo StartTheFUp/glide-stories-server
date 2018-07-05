@@ -164,7 +164,7 @@ const slideHandlers = {
   }
 }
 
-app.post('/slide/:type/:id', auth.requireToken, awaitRoute(async (req, res) => {
+app.post('/slide/:type/:id', auth.requireToken, (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       console.log('there is an error', err)
@@ -176,15 +176,16 @@ app.post('/slide/:type/:id', auth.requireToken, awaitRoute(async (req, res) => {
       }
     }
 
+    console.log(req.files)
+
     const [ { location } ] = req.files
     db.setSlideImage({
       type: req.params.type,
       id: req.params.id,
       image: location
-    })
-      .then(() => res.json({ url: location }))
+    }).then(() => res.json({ url: location }))
   })
-}))
+})
 
 app.post('/slides', auth.requireToken, awaitRoute(async req => {
   const slide = req.body
@@ -201,8 +202,7 @@ app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
 }))
 
 app.delete('/slides/:type/:id', auth.requireToken, awaitRoute(async (req) => {
-  const id = req.params.id
-  const type = req.params.type
+  const { id, type } = req.params
   await db.deleteSlide(type, id)
 
   return 'deleted'
@@ -216,7 +216,7 @@ app.post('/sips/:id', auth.requireToken, awaitRoute(req => db.updateSipOrder({
   ...req.body
 })))
 
-app.delete('/sips/:id', awaitRoute(async (req) => {
+app.delete('/sips/:id', auth.requireToken, awaitRoute(async (req) => {
   const id = Number(req.params.id)
   await db.deleteSip(id)
 
