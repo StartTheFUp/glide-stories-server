@@ -47,7 +47,7 @@ const getSip = async id => {
 
 const getSips = userId => knex
   .select('sips.*',
-     ' slides_intro.title AS slidesIntroTitle',
+    ' slides_intro.title AS slidesIntroTitle',
     'slides_intro.created_at AS slidesIntroCreatedAt',
     'slides_intro.subtitle',
     'slides_intro.image_url')
@@ -65,7 +65,6 @@ const createSlide = ({ type }, params) => knex(slideTypes[type])
   .insert(params)
 
 const createSip = async ({title, userId}) => {
-
   const [ sipId ] = await knex
     .returning('id')
     .insert({

@@ -139,7 +139,7 @@ const slideHandlers = {
       image_url: '',
       btn_text: '',
       btn_link: '',
-      sip_id: sipId,
+      sip_id: sipId
     }),
     update: slide => ({
       title: slide.title,
@@ -183,7 +183,6 @@ app.post('/sips/:id', auth.requireToken, awaitRoute(req => db.updateSipOrder({
   ...req.params,
   ...req.body
 })))
-
 
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
