@@ -200,7 +200,14 @@ app.post('/slides/:id', awaitRoute(async req => {
   return 'ok'
 }))
 
-app.delete('/slides/:id', awaitRoute(async () => {}))
+app.delete('/slides/:type/:id', awaitRoute(async (req) => {
+  const id = req.params.id
+  const type = req.params.type
+  await db.deleteSlide(type, id)
+
+  return 'deleted'
+}))
+
 app.get('/sips', awaitRoute(req => db.getSips(req.token && req.token.id)))
 app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
 app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
