@@ -60,6 +60,10 @@ const createSlide = ({ type }, params) => knex(slideTypes[type])
   .returning('id')
   .insert(params)
 
+const deleteSlide = (type, id) => knex(slideTypes[type])
+  .where('id', id)
+  .del()
+
 const createSip = async title => {
   const [ sipId ] = await knex
     .returning('id')
@@ -116,5 +120,6 @@ module.exports = {
   updateSipOrder,
   getUserByEmail,
   createUser,
-  camelSnake
+  camelSnake,
+  deleteSlide,
 }
