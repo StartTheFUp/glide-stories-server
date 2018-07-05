@@ -40,6 +40,7 @@ const awaitRoute = routeHandler => async (req, res, next) => {
 }
 
 app.use((req, res, next) => {
+  console.log('lol', req.body)
   res.header('Access-Control-Allow-Origin', req.headers.origin)
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token')
@@ -139,7 +140,7 @@ const slideHandlers = {
       image_url: '',
       btn_text: '',
       btn_link: '',
-      sip_id: sipId
+      sip_id: sipId,
     }),
     update: slide => ({
       title: slide.title,
@@ -151,7 +152,7 @@ const slideHandlers = {
   }
 }
 
-app.post('/slide/:type/:id', upload.array('image', 1), awaitRoute(async req => {
+app.post('/slide/:type/:id', auth.requireToken, upload.array('image', 1), awaitRoute(async req => {
   const [ { location } ] = req.files
   await db.setSlideImage({
     type: req.params.type,
@@ -161,29 +162,29 @@ app.post('/slide/:type/:id', upload.array('image', 1), awaitRoute(async req => {
   return { url: location }
 }))
 
-app.post('/slides', awaitRoute(async req => {
+app.post('/slides', auth.requireToken, awaitRoute(async req => {
   const slide = req.body
   const params = await slideHandlers[slide.type].create(slide)
   const [ id ] = await db.createSlide(slide, params)
   return { id, ...db.camelSnake(params) }
 }))
 
-app.post('/slides/:id', awaitRoute(async req => {
+app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
   const slide = { ...req.params, ...req.body }
   const params = await slideHandlers[slide.type].update(slide)
   await db.updateSlide(slide, params)
   return 'ok'
 }))
 
-app.delete('/slides/:id', awaitRoute(async () => {}))
-app.get('/sips', awaitRoute(req => db.getSips(req.token && req.token.id)))
+app.delete('/slides/:id', auth.requireToken, awaitRoute(async () => {}))
+app.get('/sips', auth.requireToken, awaitRoute(req => db.getSips(req.token.id)))
 app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
-app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
+app.post('/sips', auth.requireToken, awaitRoute(async req => db.createSip({ title: req.body.title, userId: req.token.id })))
+app.post('/sips/:id', auth.requireToken, awaitRoute(req => db.updateSipOrder({
   ...req.params,
   ...req.body
 })))
 
-app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
 
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
