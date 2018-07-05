@@ -92,6 +92,10 @@ const createSip = async title => {
   }
 }
 
+const deleteSip = id => knex('sips')
+  .where('id', id)
+  .del()
+
 const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
   .where('id', id)
   .update('image_url', image)
@@ -122,4 +126,5 @@ module.exports = {
   createUser,
   camelSnake,
   deleteSlide,
+  deleteSip
 }
