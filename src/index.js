@@ -40,7 +40,6 @@ const awaitRoute = routeHandler => async (req, res, next) => {
 }
 
 app.use((req, res, next) => {
-  console.log(req.token)
   res.header('Access-Control-Allow-Origin', req.headers.origin)
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token')
@@ -153,11 +152,11 @@ const slideHandlers = {
 }
 
 app.post('/slide/:type/:id', auth.requireToken, upload.array('image', 1), awaitRoute(async req => {
-  console.log(req.files)
+  const [ { location } ] = req.files
   await db.setSlideImage({
     type: req.params.type,
     id: req.params.id,
-    image: req.files
+    image: location
   })
   return { url: location }
 }))
