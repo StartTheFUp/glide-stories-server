@@ -46,10 +46,14 @@ const getSip = async id => {
 }
 
 const getSips = userId => knex
-  .select('sips.*', 'slides_intro.title AS slidesIntroTitle', 'slides_intro.created_at AS slidesIntroCreatedAt', 'slides_intro.subtitle', 'slides_intro.image_url')
+  .select('sips.*',
+    ' slides_intro.title AS slidesIntroTitle',
+    'slides_intro.created_at AS slidesIntroCreatedAt',
+    'slides_intro.subtitle',
+    'slides_intro.image_url')
   .from('slides_intro')
   .innerJoin('sips', 'sips.id', 'slides_intro.sip_id')
-  // .where('user_id', userId)
+  .where('user_id', userId)
   .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map()).values() ])
 
 const updateSipOrder = ({ id, order }) => knex('sips')
@@ -64,10 +68,13 @@ const deleteSlide = (type, id) => knex(slideTypes[type])
   .where('id', id)
   .del()
 
-const createSip = async title => {
+const createSip = async ({title, userId}) => {
   const [ sipId ] = await knex
     .returning('id')
-    .insert('title', title)
+    .insert({
+      title,
+      user_id: userId
+    })
     .into('sips')
 
   const [ id ] = await knex
