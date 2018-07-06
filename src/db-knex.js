@@ -50,7 +50,7 @@ const getSips = userId => knex
     ' slides_intro.title AS slidesIntroTitle',
     'slides_intro.created_at AS slidesIntroCreatedAt',
     'slides_intro.subtitle',
-    'slides_intro.image_url')
+    'slides_intro.image_url AS imageUrl')
   .from('slides_intro')
   .innerJoin('sips', 'sips.id', 'slides_intro.sip_id')
   .where('user_id', userId)
