@@ -41,6 +41,7 @@ const awaitRoute = routeHandler => async (req, res, next) => {
 }
 
 app.use((req, res, next) => {
+  console.log(req.token)
   res.header('Access-Control-Allow-Origin', req.headers.origin)
   res.header('Access-Control-Allow-Methods', '*')
   res.header('Access-Control-Allow-Headers',
@@ -169,8 +170,8 @@ app.post('/slide/:type/:id', auth.requireToken, (req, res) => {
     if (err) {
       console.log('there is an error', err)
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.json({error: 'file too big'})
-      }
+        return res.json({error: 'File too big'})
+      } 
       if (req.fileValidationError) {
         return res.json({ error: 'Invalid type file' })
       }
@@ -210,6 +211,7 @@ app.delete('/slides/:type/:id', auth.requireToken, awaitRoute(async (req) => {
 
 app.get('/sips', auth.requireToken, awaitRoute(req => db.getSips(req.token.id)))
 app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
+app.get('/getUserEmail', auth.requireToken, (req, res) => res.json(req.token.email))
 app.post('/sips', auth.requireToken, awaitRoute(async req => db.createSip({ title: req.body.title, userId: req.token.id })))
 app.post('/sips/:id', auth.requireToken, awaitRoute(req => db.updateSipOrder({
   ...req.params,
@@ -222,6 +224,7 @@ app.delete('/sips/:id', auth.requireToken, awaitRoute(async (req) => {
 
   return 'deleted'
 }))
+
 
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))

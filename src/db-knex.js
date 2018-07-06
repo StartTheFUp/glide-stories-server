@@ -116,6 +116,10 @@ const createUser = params => knex
   .insert(params)
   .into('users')
 
+const updateUser = param => knex('users')
+  .where('id', param.id)
+  .update(param)
+
 const getUserByEmail = email => knex('users')
   .select()
   .where('email', email)
@@ -133,5 +137,6 @@ module.exports = {
   createUser,
   camelSnake,
   deleteSlide,
-  deleteSip
+  deleteSip,
+  updateUser
 }
