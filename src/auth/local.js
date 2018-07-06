@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
     if (req.body.email) {
       params.email = req.body.email
       await db.updateUser(params)
-      return { message: 'account updated', token: jwt.sign({ email: params.email, id }, SECRET) }
+      return { message: 'account updated', token: jwt.sign({ email: params.email, id: params.id }, SECRET) }
     } else {
       await db.updateUser(params)
       return { message: 'account updated', token: req.headers['x-access-token'] }

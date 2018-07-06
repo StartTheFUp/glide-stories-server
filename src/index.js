@@ -58,7 +58,7 @@ const upload = multer({
   }),
   fileFilter: (req, file, cb) => { // accepts only images
     const ext = path.extname(file.originalname).toLowerCase()
-    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg') {
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
       req.fileValidationError = 'invalid file type'
       return cb(new Error('invalid file type'), false)
     }
