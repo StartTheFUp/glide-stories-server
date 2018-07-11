@@ -1,7 +1,6 @@
 const express = require('express')
 const db = require('./db-knex.js')
 const got = require('got')
-const config = require('./data/twitter_config.js')
 const auth = require('./auth/local.js')
 const aws = require('aws-sdk')
 const multer = require('multer')
@@ -10,12 +9,17 @@ const metascraper = require('metascraper')
 const Twitter = require('twitter-node-client').Twitter
 const bodyParser = require('body-parser')
 const app = express()
-const twitter = new Twitter(config)
+const twitter = new Twitter({
+  consumerKey: process.env.TWITTER_CONSUMER_KEY,
+  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  accessToken: process.env.TWITTER_ACCESS_TOKEN,
+  accessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+})
 
 aws.config.update({
-  secretAccessKey: 'svQm/6UJPrzjgazOYXMcdeaA5BXT7/drD9PcEIZ3',
-  accessKeyId: 'AKIAJHBZMIGCPJ3Q6AEA',
-  region: 'eu-west-3'
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  region: process.env.AWS_REGION || 'eu-west-3'
 })
 
 const s3 = new aws.S3()
@@ -39,8 +43,9 @@ const awaitRoute = routeHandler => async (req, res, next) => {
   }
 }
 
+const clientOrigin = process.env.CLIENT_ORIGIN
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin)
+  res.header('Access-Control-Allow-Origin', clientOrigin)
   res.header('Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept')
   next()
@@ -189,4 +194,4 @@ app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
 
-app.listen(5000, () => console.log('Port 5000'))
+app.listen(process.env.PORT, () => console.log(`Port ${process.env.PORT}`))
