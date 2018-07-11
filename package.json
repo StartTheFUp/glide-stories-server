@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "private": true,
   "scripts": {
+    "postinstall": "knex migrate:latest",
     "test": "echo 'no test specified'",
     "lint": "standard | snazzy",
     "start": "node src"
