@@ -8,6 +8,7 @@ const multerS3 = require('multer-s3')
 const metascraper = require('metascraper')
 const Twitter = require('twitter-node-client').Twitter
 const bodyParser = require('body-parser')
+const path = require('path')
 const app = express()
 const twitter = new Twitter({
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
@@ -46,8 +47,9 @@ const awaitRoute = routeHandler => async (req, res, next) => {
 const clientOrigin = process.env.CLIENT_ORIGIN
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', clientOrigin)
+  res.header('Access-Control-Allow-Methods', '*')
   res.header('Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept')
+    'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token')
   next()
 })
 
@@ -57,8 +59,19 @@ const upload = multer({
     acl: 'public-read',
     bucket: 'websips',
     key: (req, file, cb) => cb(null, file.originalname)
-  })
-})
+  }),
+  fileFilter: (req, file, cb) => { // accepts only images
+    const ext = path.extname(file.originalname).toLowerCase()
+    if (ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.gif') {
+      req.fileValidationError = 'invalid file type'
+      return cb(new Error('invalid file type'), false)
+    }
+    cb(null, true)
+  },
+  limits: { // limited at 5 Mo
+    fileSize: 5000000
+  }
+}).array('image', 1)
 
 const slideHandlers = {
   intro: {
@@ -144,8 +157,7 @@ const slideHandlers = {
       image_url: '',
       btn_text: '',
       btn_link: '',
-      sip_id: sipId,
-      created_at: new Date()
+      sip_id: sipId
     }),
     update: slide => ({
       title: slide.title,
@@ -157,41 +169,75 @@ const slideHandlers = {
   }
 }
 
-app.post('/slide/:type/:id', upload.array('image', 1), awaitRoute(async req => {
-  const [ { location } ] = req.files
-  await db.setSlideImage({
-    type: req.params.type,
-    id: req.params.id,
-    image: location
-  })
-  return { url: location }
-}))
+app.post('/slide/:type/:id', auth.requireToken, (req, res) => {
+  upload(req, res, (err) => {
+    if (err) {
+      console.log('there is an error', err)
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.json({error: 'File too big'})
+      }
+      if (req.fileValidationError) {
+        return res.json({ error: 'Invalid type file' })
+      }
+    }
 
-app.post('/slides', awaitRoute(async req => {
+    console.log(req.files)
+
+    const [ { location } ] = req.files
+    db.setSlideImage({
+      type: req.params.type,
+      id: req.params.id,
+      image: location
+    }).then(() => res.json({ url: location }))
+  })
+})
+
+app.post('/slides', auth.requireToken, awaitRoute(async req => {
   const slide = req.body
   const params = await slideHandlers[slide.type].create(slide)
   const [ id ] = await db.createSlide(slide, params)
   return { id, ...db.camelSnake(params) }
 }))
 
-app.post('/slides/:id', awaitRoute(async req => {
+app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
   const slide = { ...req.params, ...req.body }
   const params = await slideHandlers[slide.type].update(slide)
   await db.updateSlide(slide, params)
   return 'ok'
 }))
 
-app.delete('/slides/:id', awaitRoute(async () => {}))
-app.get('/sips', awaitRoute(req => db.getSips(req.token && req.token.id)))
+app.delete('/slides/:type/:id', auth.requireToken, awaitRoute(async (req) => {
+  const { id, type } = req.params
+  await db.deleteSlide(type, id)
+
+  return 'deleted'
+}))
+
+app.get('/sips', auth.requireToken, awaitRoute(req => db.getSips(req.token.id)))
 app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
-app.post('/sips/:id', awaitRoute(req => db.updateSipOrder({
+app.get('/getUserEmail', auth.requireToken, (req, res) => res.json(req.token.email))
+app.post('/sips', auth.requireToken, awaitRoute(async req => db.createSip({ title: req.body.title, userId: req.token.id })))
+app.post('/sips/:id', auth.requireToken, awaitRoute(req => db.updateSipOrder({
   ...req.params,
   ...req.body
 })))
 
-app.post('/sips', awaitRoute(async req => db.createSip(req.body.title)))
+app.delete('/sips/:id', auth.requireToken, awaitRoute(async (req) => {
+  const id = Number(req.params.id)
+  await db.deleteSip(id)
+
+  return 'deleted'
+}))
+
 
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
+app.use((err, req, res, next) => {
+  if (err) {
+    res.status(500).json({ error: err.message })
+  } else {
+    res.status(404).json({ error: 'Not Found' })
+  }
+})
 
 app.listen(process.env.PORT, () => console.log(`Port ${process.env.PORT}`))

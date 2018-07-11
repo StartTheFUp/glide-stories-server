@@ -46,10 +46,14 @@ const getSip = async id => {
 }
 
 const getSips = userId => knex
-  .select('sips.*', 'slides_intro.title AS slidesIntroTitle', 'slides_intro.created_at AS slidesIntroCreatedAt', 'slides_intro.subtitle', 'slides_intro.image_url')
+  .select('sips.*',
+    ' slides_intro.title AS slidesIntroTitle',
+    'slides_intro.created_at AS slidesIntroCreatedAt',
+    'slides_intro.subtitle',
+    'slides_intro.image_url AS imageUrl')
   .from('slides_intro')
   .innerJoin('sips', 'sips.id', 'slides_intro.sip_id')
-  // .where('user_id', userId)
+  .where('user_id', userId)
   .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map()).values() ])
 
 const updateSipOrder = ({ id, order }) => knex('sips')
@@ -60,10 +64,17 @@ const createSlide = ({ type }, params) => knex(slideTypes[type])
   .returning('id')
   .insert(params)
 
-const createSip = async title => {
+const deleteSlide = (type, id) => knex(slideTypes[type])
+  .where('id', id)
+  .del()
+
+const createSip = async ({title, userId}) => {
   const [ sipId ] = await knex
     .returning('id')
-    .insert('title', title)
+    .insert({
+      title,
+      user_id: userId
+    })
     .into('sips')
 
   const [ id ] = await knex
@@ -72,7 +83,7 @@ const createSip = async title => {
       title,
       subtitle: '',
       image_url: '',
-      sip_id: sipId,
+      sip_id: sipId
     })
     .into('slides_intro')
 
@@ -88,6 +99,10 @@ const createSip = async title => {
   }
 }
 
+const deleteSip = id => knex('sips')
+  .where('id', id)
+  .del()
+
 const setSlideImage = ({ type, id, image }) => knex(slideTypes[type])
   .where('id', id)
   .update('image_url', image)
@@ -100,6 +115,10 @@ const createUser = params => knex
   .returning('id')
   .insert(params)
   .into('users')
+
+const updateUser = param => knex('users')
+  .where('id', param.id)
+  .update(param)
 
 const getUserByEmail = email => knex('users')
   .select()
@@ -116,5 +135,8 @@ module.exports = {
   updateSipOrder,
   getUserByEmail,
   createUser,
-  camelSnake
+  camelSnake,
+  deleteSlide,
+  deleteSip,
+  updateUser
 }

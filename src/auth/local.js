@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 const SECRET = process.env.SECRET || 'pouet2'
 const localOpts = {
   usernameField: 'email',
-  passwordField: 'password',
+  passwordField: 'password'
 }
 
 const loginError = { message: 'Incorrect email or password.' }
@@ -36,24 +36,37 @@ const tokenParser = (req, res, next) => {
 const requireToken = (req, res, next) =>
   next(req.token ? null : Error('forbidden'))
 
-const setToken = (res, email) => res.set('x-access-token', jwt.sign({ email }, SECRET))
 const createUser = async (req, res) => {
-  const password = await bcrypt.hash(req.body.password, 9)
-  const { email } = req.body
-  await db.createUser({ password, email })
-  setToken(res, email)
-  return { message: 'account created' }
+  if (req.token) {
+    const params = { id: req.token.id }
+    if (req.body.password) {
+      params.password = await bcrypt.hash(req.body.password, 9)
+    }
+    if (req.body.email) {
+      params.email = req.body.email
+      await db.updateUser(params)
+      return { message: 'account updated', token: jwt.sign({ email: params.email, id: params.id }, SECRET) }
+    } else {
+      await db.updateUser(params)
+      return { message: 'account updated', token: req.headers['x-access-token'] }
+    }
+  } else {
+    const password = await bcrypt.hash(req.body.password, 9)
+    const { email } = req.body
+    const [ id ] = await db.createUser({ password, email })
+    return { message: 'account created', email, token: jwt.sign({ email, id }, SECRET) }
+  }
 }
 
 // Highway to hell
-const login = (req, res) => new Promise((s, f) =>
+const login = (req, res) => new Promise((resolve, reject) =>
   passport.authenticate('local', { session: false }, (authErr, user, info) => {
-    if (authErr) return f(authErr)
-    if (!user) return f(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
+    if (authErr) return reject(authErr)
+    if (!user) return reject(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
     return req.login(user, { session: false }, loginErr => {
-      if (loginErr) return f(loginErr)
-      setToken(res, user.email)
-      s({ message: 'login successfull' })
+      if (loginErr) return reject(loginErr)
+      const { email, id } = user
+      resolve({ message: 'login successfull', token: jwt.sign({ email, id }, SECRET) })
     })
   })(req, res))
 
