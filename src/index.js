@@ -119,7 +119,6 @@ const slideHandlers = {
       if (!newTweet.image_url && !newTweet.author_name && !newTweet.author_screen_name && !newTweet.publication_date && !newTweet.text) {
         return undefined
       } return newTweet
-
     },
     update: async (slide) => {
       const tweetId = slide.tweetUrl.split('/').slice(-1).join('')
