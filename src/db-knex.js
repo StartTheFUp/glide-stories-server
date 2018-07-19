@@ -125,6 +125,11 @@ const getUserByEmail = email => knex('users')
   .where('email', email)
   .first()
 
+const getArticleUrlBySlideId = id => knex('slides_article_quote')
+  .select('article_url')
+  .where('id', id)
+  .first()
+
 module.exports = {
   createSlide,
   updateSlide,
@@ -138,5 +143,6 @@ module.exports = {
   camelSnake,
   deleteSlide,
   deleteSip,
-  updateUser
+  updateUser,
+  getArticleUrlBySlideId
 }
