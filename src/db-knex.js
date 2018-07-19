@@ -120,6 +120,9 @@ const updateUser = param => knex('users')
   .where('id', param.id)
   .update(param)
 
+const getUsers = () => knex('users')
+  .select()
+
 const getUserByEmail = email => knex('users')
   .select()
   .where('email', email)
@@ -143,6 +146,7 @@ module.exports = {
   camelSnake,
   deleteSlide,
   deleteSip,
+  getUsers,
   updateUser,
   getArticleUrlBySlideId
 }
