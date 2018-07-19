@@ -72,7 +72,7 @@ const createUser = async (req, res) => {
 const login = (req, res) => new Promise((resolve, reject) =>
   passport.authenticate('local', { session: false }, (authErr, user, info) => {
     if (authErr) return reject(authErr)
-    if (!user) return reject(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
+    if (!user) return reject(Error('Your account already exist')) // faire un truc mieux
     return req.login(user, { session: false }, loginErr => {
       if (loginErr) return reject(loginErr)
       const { email, id } = user
