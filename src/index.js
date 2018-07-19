@@ -116,14 +116,19 @@ const slideHandlers = {
         sip_id: sipId
       })
     },
-    update: slide => ({
-      tweet_url: slide.tweetUrl,
-      author_name: slide.authorName,
-      author_screen_name: slide.authorScreenName,
-      text: slide.text,
-      image_url: slide.imageUrl,
-      publication_date: slide.publicationDate
-    })
+    update: async (slide) => {
+      const tweetId = slide.tweetUrl.split('/').slice(-1).join('')
+      const tweet = JSON.parse(await getTweet(tweetId))
+
+      return ({
+        publication_date: tweet.created_at,
+        tweet_url: slide.tweetUrl,
+        image_url: tweet.user.profile_image_url_https,
+        author_name: tweet.user.name,
+        author_screen_name: tweet.user.screen_name,
+        text: tweet.text
+      })
+    }
   },
 
   article: {
