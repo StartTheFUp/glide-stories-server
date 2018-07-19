@@ -53,6 +53,16 @@ const createUser = async (req, res) => {
   } else {
     const password = await bcrypt.hash(req.body.password, 9)
     const { email } = req.body
+
+    // error handling
+    const users = await db.getUsers()
+    const emails = users.map(user => user.email)
+    const emailAlreadyExists = emails.some(emailDB => emailDB === email)
+
+    if (emailAlreadyExists) {
+      return { error: 'Email already exists' }
+    }
+
     const [ id ] = await db.createUser({ password, email })
     return { message: 'account created', email, token: jwt.sign({ email, id }, SECRET) }
   }
