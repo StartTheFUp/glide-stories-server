@@ -106,7 +106,7 @@ const slideHandlers = {
       const tweetId = url.split('/').slice(-1).join('')
       const tweet = JSON.parse(await getTweet(tweetId))
 
-      return ({
+      const newTweet = {
         publication_date: tweet.created_at,
         tweet_url: url,
         image_url: tweet.user.profile_image_url_https,
@@ -114,7 +114,12 @@ const slideHandlers = {
         author_screen_name: tweet.user.screen_name,
         text: tweet.text,
         sip_id: sipId
-      })
+      }
+
+      if (!newTweet.image_url && !newTweet.author_name && !newTweet.author_screen_name && !newTweet.publication_date && !newTweet.text) {
+        return undefined
+      } return newTweet
+
     },
     update: async (slide) => {
       const tweetId = slide.tweetUrl.split('/').slice(-1).join('')
