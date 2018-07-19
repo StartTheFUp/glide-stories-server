@@ -253,7 +253,6 @@ app.delete('/sips/:id', auth.requireToken, awaitRoute(async (req) => {
   return 'deleted'
 }))
 
-
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))
 app.use((err, req, res, next) => {
