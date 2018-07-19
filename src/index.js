@@ -145,14 +145,29 @@ const slideHandlers = {
         sip_id: sipId
       })
     },
-    update: slide => ({
-      article_url: slide.articleUrl,
-      author_name: slide.authorName,
-      publication_date: slide.publicationDate,
-      source_name: slide.source,
-      source_image: slide.sourceImage,
-      text: slide.text
-    })
+    update: async slide => {
+      const articleUrlDB = await db.getArticleUrlBySlideId(slide.id)
+
+      if (slide.articleUrl !== articleUrlDB.article_url) {
+        const { body } = await got(slide.articleUrl)
+        const metadatas = await metascraper({ html: body, url: slide.articleUrl })
+
+        return ({
+          article_url: metadatas.url,
+          author_name: metadatas.author,
+          source_name: metadatas.publisher,
+          source_image: metadatas.logo,
+          text: ''
+        })
+      }
+      return ({
+        author_name: slide.authorName,
+        publication_date: slide.publicationDate,
+        source_name: slide.source,
+        source_image: slide.sourceImage,
+        text: slide.text
+      })
+    }
   },
 
   callToAction: {
