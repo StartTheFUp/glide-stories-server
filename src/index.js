@@ -222,8 +222,12 @@ app.post('/slides', auth.requireToken, awaitRoute(async req => {
 app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
   const slide = { ...req.params, ...req.body }
   const params = await slideHandlers[slide.type].update(slide)
+
   await db.updateSlide(slide, params)
-  return 'ok'
+  if (slide.type === 'tweet' || slide.type === 'article') {
+    return { id: slide.id, ...db.camelSnake(params) }
+  }
+  return { id: slide.id }
 }))
 
 app.delete('/slides/:type/:id', auth.requireToken, awaitRoute(async (req) => {
