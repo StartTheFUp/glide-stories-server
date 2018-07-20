@@ -225,6 +225,8 @@ app.post('/slides', auth.requireToken, awaitRoute(async req => {
 
 app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
   const slide = { ...req.params, ...req.body }
+  const tweetRegex = RegExp('(https?:\/\/)(twitter.com)\/([a-zA-Z0-9_]*)\/(status)\/([0-9]*)')
+  if (slide.type === 'tweet' && !tweetRegex.test(slide.tweetUrl)) return { id: slide.id }
   const params = await slideHandlers[slide.type].update(slide)
 
   await db.updateSlide(slide, params)
