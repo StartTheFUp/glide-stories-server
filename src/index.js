@@ -167,7 +167,7 @@ const slideHandlers = {
       return ({
         author_name: slide.authorName,
         publication_date: slide.publicationDate,
-        source_name: slide.source,
+        source_name: slide.sourceName,
         source_image: slide.sourceImage,
         text: slide.text
       })
