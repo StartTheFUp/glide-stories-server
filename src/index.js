@@ -207,7 +207,7 @@ app.post('/slide/:type/:id', auth.requireToken, (req, res) => {
     if (err) {
       console.log('there is an error', err)
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.json({error: 'File too big'})
+        return res.json({ error: 'File too big' })
       }
       if (req.fileValidationError) {
         return res.json({ error: 'Invalid type file' })
