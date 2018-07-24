@@ -154,6 +154,11 @@ const slideHandlers = {
 
       if (slide.articleUrl !== articleUrlDB.article_url) {
         const { body } = await got(slide.articleUrl)
+          .catch(err => {
+            console.error('wrong url', err.message)
+            throw Error('wrong url')
+          })
+
         const metadatas = await metascraper({ html: body, url: slide.articleUrl })
 
         return ({
