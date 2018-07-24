@@ -32,6 +32,7 @@ const getSip = async id => {
     .map(async ([type, tableName]) => {
       const slides = await getSlidesBySipId(tableName, id)
       for (const slide of slides) {
+        if (type === 'article') { slide.article_link = slide.article_url }
         slide.uid = `${type}-${slide.id}`
         slide.type = type
         slide.order = order.indexOf(slide.uid)
