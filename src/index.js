@@ -240,6 +240,11 @@ app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
 
   await db.updateSlide(slide, params)
   if (slide.type === 'tweet' || slide.type === 'article') {
+    .catch(err => {
+      console.error('Unabled to save data in database. Try again later.', err.message)
+      throw Error('Unabled to save data in database. Try again later.')
+      // Promise.reject(Error('Unabled to save data in database. Try again later.'))
+    })
     return { id: slide.id, ...db.camelSnake(params) }
   }
   return { id: slide.id }
