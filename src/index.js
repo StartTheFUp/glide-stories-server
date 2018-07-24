@@ -160,6 +160,10 @@ const slideHandlers = {
           })
 
         const metadatas = await metascraper({ html: body, url: slide.articleUrl })
+          .catch(err => {
+            console.error('unable to parse meta', err.message)
+            throw Error('unable to parse meta')
+          })
 
         return ({
           article_url: metadatas.url,
