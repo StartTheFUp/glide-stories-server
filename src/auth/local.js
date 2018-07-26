@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
     if (req.body.email) {
       params.email = req.body.email
       await db.updateUser(params)
-      return { message: 'account updated', token: jwt.sign({ email: params.email, id: params.id }, SECRET) }
+      return { message: 'account updated', email: params.email, token: jwt.sign({ email: params.email, id: params.id }, SECRET) }
     } else {
       await db.updateUser(params)
       return { message: 'account updated', token: req.headers['x-access-token'] }
@@ -76,7 +76,7 @@ const login = (req, res) => new Promise((resolve, reject) =>
     return req.login(user, { session: false }, loginErr => {
       if (loginErr) return reject(loginErr)
       const { email, id } = user
-      resolve({ message: 'login successfull', token: jwt.sign({ email, id }, SECRET) })
+      resolve({ message: 'login successfull', email, token: jwt.sign({ email, id }, SECRET) })
     })
   })(req, res))
 
