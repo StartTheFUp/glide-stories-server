@@ -106,7 +106,7 @@ const slideHandlers = {
       const tweetId = url.split('/').slice(-1).join('')
       const tweet = JSON.parse(await getTweet(tweetId))
 
-      return ({
+      const newTweet = {
         publication_date: tweet.created_at,
         tweet_url: url,
         image_url: tweet.user.profile_image_url_https,
@@ -114,16 +114,25 @@ const slideHandlers = {
         author_screen_name: tweet.user.screen_name,
         text: tweet.text,
         sip_id: sipId
-      })
+      }
+
+      if (!newTweet.image_url && !newTweet.author_name && !newTweet.author_screen_name && !newTweet.publication_date && !newTweet.text) {
+        return undefined
+      } return newTweet
     },
-    update: slide => ({
-      tweet_url: slide.tweetUrl,
-      author_name: slide.authorName,
-      author_screen_name: slide.authorScreenName,
-      text: slide.text,
-      image_url: slide.imageUrl,
-      publication_date: slide.publicationDate
-    })
+    update: async (slide) => {
+      const tweetId = slide.tweetUrl.split('/').slice(-1).join('')
+      const tweet = JSON.parse(await getTweet(tweetId))
+
+      return ({
+        publication_date: tweet.created_at,
+        tweet_url: slide.tweetUrl,
+        image_url: tweet.user.profile_image_url_https,
+        author_name: tweet.user.name,
+        author_screen_name: tweet.user.screen_name,
+        text: tweet.text
+      })
+    }
   },
 
   article: {
@@ -140,14 +149,38 @@ const slideHandlers = {
         sip_id: sipId
       })
     },
-    update: slide => ({
-      article_url: slide.articleUrl,
-      author_name: slide.authorName,
-      publication_date: slide.publicationDate,
-      source_name: slide.source,
-      source_image: slide.sourceImage,
-      text: slide.text
-    })
+    update: async slide => {
+      const articleUrlDB = await db.getArticleUrlBySlideId(slide.id)
+
+      if (slide.articleUrl !== articleUrlDB.article_url) {
+        const { body } = await got(slide.articleUrl)
+          .catch(err => {
+            console.error('wrong url', err.message)
+            throw Error('wrong url')
+          })
+
+        const metadatas = await metascraper({ html: body, url: slide.articleUrl })
+          .catch(err => {
+            console.error('unable to parse meta', err.message)
+            throw Error('unable to parse meta')
+          })
+
+        return ({
+          article_url: metadatas.url,
+          author_name: metadatas.author,
+          source_name: metadatas.publisher,
+          source_image: metadatas.logo,
+          text: ''
+        })
+      }
+      return ({
+        author_name: slide.authorName,
+        publication_date: slide.publicationDate,
+        source_name: slide.sourceName,
+        source_image: slide.sourceImage,
+        text: slide.text
+      })
+    }
   },
 
   callToAction: {
@@ -174,7 +207,7 @@ app.post('/slide/:type/:id', auth.requireToken, (req, res) => {
     if (err) {
       console.log('there is an error', err)
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.json({error: 'File too big'})
+        return res.json({ error: 'File too big' })
       }
       if (req.fileValidationError) {
         return res.json({ error: 'Invalid type file' })
@@ -201,9 +234,23 @@ app.post('/slides', auth.requireToken, awaitRoute(async req => {
 
 app.post('/slides/:id', auth.requireToken, awaitRoute(async req => {
   const slide = { ...req.params, ...req.body }
+  const tweetRegex = RegExp('(https?:\/\/)(twitter.com)\/([a-zA-Z0-9_]*)\/(status)\/([0-9]*)') // eslint-disable-line
+  if ((slide.type === 'tweet') && (!tweetRegex.test(slide.tweetUrl))) return { id: slide.id } // return { error: 'Wrong tweet url format type' } ??
   const params = await slideHandlers[slide.type].update(slide)
+
   await db.updateSlide(slide, params)
-  return 'ok'
+    .catch(err => {
+      console.error('Unabled to save data in database. Try again later.', err.message)
+      throw Error('Unabled to save data in database. Try again later.')
+      // Promise.reject(Error('Unabled to save data in database. Try again later.'))
+    })
+
+  if (slide.type === 'tweet') {
+    return { id: slide.id, ...db.camelSnake(params) }
+  } else if (slide.type === 'article') {
+    return { id: slide.id, articleLink: slide.articleUrl, ...db.camelSnake(params) }
+  }
+  return { id: slide.id }
 }))
 
 app.delete('/slides/:type/:id', auth.requireToken, awaitRoute(async (req) => {
@@ -228,7 +275,6 @@ app.delete('/sips/:id', auth.requireToken, awaitRoute(async (req) => {
 
   return 'deleted'
 }))
-
 
 app.post('/users', awaitRoute(auth.createUser))
 app.post('/auth/local', awaitRoute(auth.login))

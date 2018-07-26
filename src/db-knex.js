@@ -32,6 +32,7 @@ const getSip = async id => {
     .map(async ([type, tableName]) => {
       const slides = await getSlidesBySipId(tableName, id)
       for (const slide of slides) {
+        if (type === 'article') { slide.article_link = slide.article_url }
         slide.uid = `${type}-${slide.id}`
         slide.type = type
         slide.order = order.indexOf(slide.uid)
@@ -120,9 +121,17 @@ const updateUser = param => knex('users')
   .where('id', param.id)
   .update(param)
 
+const getUsers = () => knex('users')
+  .select()
+
 const getUserByEmail = email => knex('users')
   .select()
   .where('email', email)
+  .first()
+
+const getArticleUrlBySlideId = id => knex('slides_article_quote')
+  .select('article_url')
+  .where('id', id)
   .first()
 
 module.exports = {
@@ -138,5 +147,7 @@ module.exports = {
   camelSnake,
   deleteSlide,
   deleteSip,
-  updateUser
+  getUsers,
+  updateUser,
+  getArticleUrlBySlideId
 }

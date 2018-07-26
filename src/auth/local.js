@@ -45,7 +45,7 @@ const createUser = async (req, res) => {
     if (req.body.email) {
       params.email = req.body.email
       await db.updateUser(params)
-      return { message: 'account updated', token: jwt.sign({ email: params.email, id: params.id }, SECRET) }
+      return { message: 'account updated', email: params.email, token: jwt.sign({ email: params.email, id: params.id }, SECRET) }
     } else {
       await db.updateUser(params)
       return { message: 'account updated', token: req.headers['x-access-token'] }
@@ -53,6 +53,16 @@ const createUser = async (req, res) => {
   } else {
     const password = await bcrypt.hash(req.body.password, 9)
     const { email } = req.body
+
+    // error handling
+    const users = await db.getUsers()
+    const emails = users.map(user => user.email)
+    const emailAlreadyExists = emails.some(emailDB => emailDB === email)
+
+    if (emailAlreadyExists) {
+      return { error: 'Email already exists' }
+    }
+
     const [ id ] = await db.createUser({ password, email })
     return { message: 'account created', email, token: jwt.sign({ email, id }, SECRET) }
   }
@@ -62,11 +72,11 @@ const createUser = async (req, res) => {
 const login = (req, res) => new Promise((resolve, reject) =>
   passport.authenticate('local', { session: false }, (authErr, user, info) => {
     if (authErr) return reject(authErr)
-    if (!user) return reject(Error('¯\\_(ツ)_/¯')) // faire un truc mieux
+    if (!user) return reject(Error('Incorrect email or password')) // faire un truc mieux
     return req.login(user, { session: false }, loginErr => {
       if (loginErr) return reject(loginErr)
       const { email, id } = user
-      resolve({ message: 'login successfull', token: jwt.sign({ email, id }, SECRET) })
+      resolve({ message: 'login successfull', email, token: jwt.sign({ email, id }, SECRET) })
     })
   })(req, res))
 
