@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const db = require('./db-knex.js')
 const got = require('got')
@@ -10,6 +11,7 @@ const Twitter = require('twitter-node-client').Twitter
 const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
+
 const twitter = new Twitter({
   consumerKey: process.env.TWITTER_CONSUMER_KEY,
   consumerSecret: process.env.TWITTER_CONSUMER_SECRET,

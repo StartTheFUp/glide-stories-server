@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "private": true,
   "scripts": {
-    "postinstall": "knex migrate:latest",
+    "postinstall": "knex migrate:latest --knexfile=src/knexfile.js",
     "test": "echo 'no test specified'",
     "lint": "standard | snazzy",
     "start": "node src"
@@ -19,6 +19,7 @@
   "dependencies": {
     "aws-sdk": "^2.267.1",
     "bcrypt": "^2.0.1",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "knex": "^0.14.6",
