@@ -16,16 +16,16 @@ module.exports = {
     }
   },
   migrations: {
-    directory: path.join(__dirname, '/database/migrations')
+    directory: path.join(__dirname, '/migrations')
   },
   production: {
     client: 'postgresql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: path.join(__dirname, '/database/migrations')
+      directory: path.join(__dirname, '/migrations')
     },
     seeds: {
-      directory: path.join(__dirname, '/database/production')
+      directory: path.join(__dirname, '/seeds')
     }
   }
 }

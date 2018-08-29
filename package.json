@@ -8,7 +8,7 @@
     "postinstall": "knex migrate:latest --knexfile=src/knexfile.js",
     "test": "echo 'no test specified'",
     "lint": "standard | snazzy",
-    "start": "node src"
+    "start": "knex migrate:latest --knexfile=src/knexfile.js && node src"
   },
   "author": "Start the F Up (www.stfu.pro)",
   "dependencies": {
