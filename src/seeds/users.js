@@ -10,14 +10,14 @@ exports.seed = (knex, Promise) => {
           created_at: new Date(),
           email: 'emailtest@test.fr',
           password: 'nfjdoegrn',
-          sip_id: 1
+          glide_id: 1
         },
         {
           id: 2,
           created_at: new Date(),
           email: 'alex@test.fr',
           password: 'nfjdoegrn',
-          sip_id: 2
+          glide_id: 2
         }
       ])
     })

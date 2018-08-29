@@ -2,7 +2,7 @@
 
 ## Client App
 
-### A Product Hunt Sips and Medium stories-like builder interface, for anyone on the web
+### A Product Hunt glides and Medium stories-like builder interface, for anyone on the web
 
   📚 Tell engaging and fast-to-read, addictive tappable stories
 

@@ -1,6 +1,6 @@
 
 exports.up = (knex, Promise) => {
-  return knex.schema.createTable('sips', table => {
+  return knex.schema.createTable('glides', table => {
     table.increments()
     table.timestamp('created_at').defaultTo(knex.fn.now()) /* ask clement for the default... utility */
     table.string('title')
@@ -9,5 +9,5 @@ exports.up = (knex, Promise) => {
 }
 
 exports.down = (knex, Promise) => {
-  return knex.schema.dropTable('sips')
+  return knex.schema.dropTable('glides')
 }

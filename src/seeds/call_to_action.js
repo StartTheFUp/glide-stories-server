@@ -13,7 +13,7 @@ exports.seed = (knex, Promise) => {
           subtitle: 'test sous titre',
           btn_text: 'test btn',
           btn_link: 'https://twitter.com/languesFR/status/1006479461108338689',
-          sip_id: 2
+          glide_id: 2
         },
         {
           id: 2,
@@ -23,7 +23,7 @@ exports.seed = (knex, Promise) => {
           subtitle: 'test sous titre 2',
           btn_text: 'test btn2',
           btn_link: 'https://twitter.com/languesFR/status/1006479461108338689',
-          sip_id: 2
+          glide_id: 2
         },
         {
           id: 3,
@@ -33,7 +33,7 @@ exports.seed = (knex, Promise) => {
           subtitle: 'test sous titre 3',
           btn_text: 'test btn3',
           btn_link: 'https://twitter.com/languesFR/status/1006479461108338689',
-          sip_id: 1
+          glide_id: 1
         }
       ])
     })

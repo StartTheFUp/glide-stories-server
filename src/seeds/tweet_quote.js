@@ -14,7 +14,7 @@ exports.seed = (knex, Promise) => {
           author_name: 'La Villette',
           author_screen_name: 'LaVillette',
           text: '#CloudGateDance \'des instants d’une rare poésie\' via @sceneweb https://t.co/dMDvRAZKqo https://t.co/oIpgAt8yQx',
-          sip_id: 1
+          glide_id: 1
         },
         {
           id: 2,
@@ -25,7 +25,7 @@ exports.seed = (knex, Promise) => {
           author_name: 'La Villette2',
           author_screen_name: 'LaVillette2',
           text: '#CloudGateDance \'des instants d’une rare poésie\' via @sceneweb https://t.co/dMDvRAZKqo https://t.co/oIpgAt8yQx',
-          sip_id: 2
+          glide_id: 2
         }
       ])
     })

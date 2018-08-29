@@ -10,21 +10,21 @@ exports.seed = (knex, Promise) => {
           created_at: new Date(),
           text: 'Text 1',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
-          sip_id: 2
+          glide_id: 2
         },
         {
           id: 2,
           created_at: new Date(),
           text: 'Text 2',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
-          sip_id: 1
+          glide_id: 1
         },
         {
           id: 3,
           created_at: new Date(),
           text: 'Text 3',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
-          sip_id: 2
+          glide_id: 2
         }
       ])
     })

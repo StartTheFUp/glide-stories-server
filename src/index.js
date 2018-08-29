@@ -59,7 +59,7 @@ const upload = multer({
   storage: multerS3({
     s3,
     acl: 'public-read',
-    bucket: 'websips',
+    bucket: process.env.AWS_BUCKET_NAME,
     key: (req, file, cb) => cb(null, file.originalname)
   }),
   fileFilter: (req, file, cb) => { // accepts only images
@@ -77,34 +77,34 @@ const upload = multer({
 
 const slideHandlers = {
   intro: {
-    create: ({ sipId }) => ({
+    create: ({ glideId }) => ({
       title: '',
       subtitle: '',
       image_url: '',
-      sip_id: sipId
+      glide_id: glideId
     }),
     update: ({ title, subtitle }) => ({ title, subtitle })
   },
 
   text: {
-    create: ({ sipId }) => ({
+    create: ({ glideId }) => ({
       text: '',
-      sip_id: sipId
+      glide_id: glideId
     }),
     update: ({ text }) => ({ text })
   },
 
   image: {
-    create: ({ sipId }) => ({
+    create: ({ glideId }) => ({
       text: '',
       image_url: '',
-      sip_id: sipId
+      glide_id: glideId
     }),
     update: ({ text }) => ({ text })
   },
 
   tweet: {
-    create: async ({ sipId, url }) => {
+    create: async ({ glideId, url }) => {
       const tweetId = url.split('/').slice(-1).join('')
       const tweet = JSON.parse(await getTweet(tweetId))
 
@@ -115,7 +115,7 @@ const slideHandlers = {
         author_name: tweet.user.name,
         author_screen_name: tweet.user.screen_name,
         text: tweet.text,
-        sip_id: sipId
+        glide_id: glideId
       }
 
       if (!newTweet.image_url && !newTweet.author_name && !newTweet.author_screen_name && !newTweet.publication_date && !newTweet.text) {
@@ -138,7 +138,7 @@ const slideHandlers = {
   },
 
   article: {
-    create: async ({ sipId, url }) => {
+    create: async ({ glideId, url }) => {
       const { body } = await got(url)
       const metadatas = await metascraper({ html: body, url })
 
@@ -148,7 +148,7 @@ const slideHandlers = {
         source_name: metadatas.publisher,
         source_image: metadatas.logo,
         text: '',
-        sip_id: sipId
+        glide_id: glideId
       })
     },
     update: async slide => {
@@ -186,13 +186,13 @@ const slideHandlers = {
   },
 
   callToAction: {
-    create: ({ sipId }) => ({
+    create: ({ glideId }) => ({
       title: '',
       subtitle: '',
       image_url: '',
       btn_text: '',
       btn_link: '',
-      sip_id: sipId
+      glide_id: glideId
     }),
     update: slide => ({
       title: slide.title,
@@ -262,18 +262,18 @@ app.delete('/slides/:type/:id', auth.requireToken, awaitRoute(async (req) => {
   return 'deleted'
 }))
 
-app.get('/sips', auth.requireToken, awaitRoute(req => db.getSips(req.token.id)))
-app.get('/sips/:id', awaitRoute(req => db.getSip(req.params.id)))
+app.get('/glides', auth.requireToken, awaitRoute(req => db.getGlides(req.token.id)))
+app.get('/glides/:id', awaitRoute(req => db.getGlide(req.params.id)))
 app.get('/getUserEmail', auth.requireToken, (req, res) => res.json(req.token.email))
-app.post('/sips', auth.requireToken, awaitRoute(async req => db.createSip({ title: req.body.title, userId: req.token.id })))
-app.post('/sips/:id', auth.requireToken, awaitRoute(req => db.updateSipOrder({
+app.post('/glides', auth.requireToken, awaitRoute(async req => db.createGlide({ title: req.body.title, userId: req.token.id })))
+app.post('/glides/:id', auth.requireToken, awaitRoute(req => db.updateGlideOrder({
   ...req.params,
   ...req.body
 })))
 
-app.delete('/sips/:id', auth.requireToken, awaitRoute(async (req) => {
+app.delete('/glides/:id', auth.requireToken, awaitRoute(async (req) => {
   const id = Number(req.params.id)
-  await db.deleteSip(id)
+  await db.deleteGlide(id)
 
   return 'deleted'
 }))

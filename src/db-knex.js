@@ -13,24 +13,24 @@ const slideTypesEntries = Object.entries(slideTypes)
 
 const camelSnake = obj => _.mapKeys(obj, (value, key) => _.camelCase(key))
 
-const getSlidesBySipId = (type, id) => knex
+const getSlidesByGlideId = (type, id) => knex
   .select()
   .table(type)
-  .where('sip_id', id)
+  .where('glide_id', id)
 
 const flatten = (a, b) => a.concat(b)
 const byOrder = (a, b) => a.order - b.order
 
-const getSip = async id => {
-  const { order, ...sip } = await knex
+const getGlide = async id => {
+  const { order, ...glide } = await knex
     .select()
-    .table('sips')
+    .table('glides')
     .where('id', id)
     .first()
 
-  sip.slides = (await Promise.all(slideTypesEntries
+  glide.slides = (await Promise.all(slideTypesEntries
     .map(async ([type, tableName]) => {
-      const slides = await getSlidesBySipId(tableName, id)
+      const slides = await getSlidesByGlideId(tableName, id)
       for (const slide of slides) {
         if (type === 'article') { slide.article_link = slide.article_url }
         slide.uid = `${type}-${slide.id}`
@@ -43,21 +43,21 @@ const getSip = async id => {
     .sort(byOrder)
     .map(camelSnake)
 
-  return sip
+  return glide
 }
 
-const getSips = userId => knex
-  .select('sips.*',
+const getGlides = userId => knex
+  .select('glides.*',
     ' slides_intro.title AS slidesIntroTitle',
     'slides_intro.created_at AS slidesIntroCreatedAt',
     'slides_intro.subtitle',
     'slides_intro.image_url AS imageUrl')
   .from('slides_intro')
-  .innerJoin('sips', 'sips.id', 'slides_intro.sip_id')
+  .innerJoin('glides', 'glides.id', 'slides_intro.glide_id')
   .where('user_id', userId)
   .then(result => [ ...result.reduce((m, s) => m.set(s.id, s), new Map()).values() ])
 
-const updateSipOrder = ({ id, order }) => knex('sips')
+const updateGlideOrder = ({ id, order }) => knex('glides')
   .where('id', id)
   .update('order', order)
 
@@ -69,14 +69,14 @@ const deleteSlide = (type, id) => knex(slideTypes[type])
   .where('id', id)
   .del()
 
-const createSip = async ({title, userId}) => {
-  const [ sipId ] = await knex
+const createGlide = async ({title, userId}) => {
+  const [ glideId ] = await knex
     .returning('id')
     .insert({
       title,
       user_id: userId
     })
-    .into('sips')
+    .into('glides')
 
   const [ id ] = await knex
     .returning('id')
@@ -84,23 +84,23 @@ const createSip = async ({title, userId}) => {
       title,
       subtitle: '',
       image_url: '',
-      sip_id: sipId
+      glide_id: glideId
     })
     .into('slides_intro')
 
   const uid = `intro-${id}`
-  await knex('sips')
-    .where('id', sipId)
+  await knex('glides')
+    .where('id', glideId)
     .update('order', uid)
 
   return {
-    id: sipId,
+    id: glideId,
     title,
-    slides: [ { id, uid, sipId, title } ]
+    slides: [ { id, uid, glideId, title } ]
   }
 }
 
-const deleteSip = id => knex('sips')
+const deleteGlide = id => knex('glides')
   .where('id', id)
   .del()
 
@@ -137,16 +137,16 @@ const getArticleUrlBySlideId = id => knex('slides_article_quote')
 module.exports = {
   createSlide,
   updateSlide,
-  getSip,
-  getSips,
-  createSip,
+  getGlide,
+  getGlides,
+  createGlide,
   setSlideImage,
-  updateSipOrder,
+  updateGlideOrder,
   getUserByEmail,
   createUser,
   camelSnake,
   deleteSlide,
-  deleteSip,
+  deleteGlide,
   getUsers,
   updateUser,
   getArticleUrlBySlideId

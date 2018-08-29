@@ -11,7 +11,7 @@ exports.seed = (knex, Promise) => {
           title: 'Test titre',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
           subtitle: 'test sous titre',
-          sip_id: 1
+          glide_id: 1
         },
         {
           id: 2,
@@ -19,7 +19,7 @@ exports.seed = (knex, Promise) => {
           title: 'Test titre 2',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
           subtitle: 'test sous titre 2',
-          sip_id: 2
+          glide_id: 2
         },
         {
           id: 3,
@@ -27,7 +27,7 @@ exports.seed = (knex, Promise) => {
           title: 'Test titre 3',
           image_url: 'https://pbs.twimg.com/profile_images/685018005990993920/bQzEIcoY_normal.jpg',
           subtitle: 'test sous titre 3',
-          sip_id: 2
+          glide_id: 2
         }
       ])
     })

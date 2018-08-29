@@ -1,7 +1,7 @@
 {
-  "name": "websips-server",
+  "name": "glide-stories-server",
   "version": "1.0.0",
-  "description": "server for websips",
+  "description": "server for glide-stories",
   "main": "src/index.js",
   "private": true,
   "scripts": {
@@ -10,12 +10,7 @@
     "lint": "standard | snazzy",
     "start": "node src"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@gitlab.com:startthefup/websips-group/websips-server.git"
-  },
-  "author": "",
-  "license": "ISC",
+  "author": "Start the F Up (www.stfu.pro)",
   "dependencies": {
     "aws-sdk": "^2.267.1",
     "bcrypt": "^2.0.1",

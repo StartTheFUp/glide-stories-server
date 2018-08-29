@@ -4,8 +4,8 @@ exports.up = (knex, Promise) => {
     table.increments()
     table.timestamp('created_at').defaultTo(knex.fn.now()) /* ask clement for the default... utility */
     table.string('text', 300)
-    table.integer('sip_id').unsigned()
-    table.foreign('sip_id').references('id').inTable('sips').onDelete('cascade').onUpdate('cascade')
+    table.integer('glide_id').unsigned()
+    table.foreign('glide_id').references('id').inTable('glides').onDelete('cascade').onUpdate('cascade')
   })
 }
 

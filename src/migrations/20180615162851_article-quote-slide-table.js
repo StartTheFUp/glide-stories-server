@@ -9,8 +9,8 @@ exports.up = (knex, Promise) => {
     table.string('author_name', 500)
     table.string('text', 500)
     table.date('publication_date', 500)
-    table.integer('sip_id').unsigned()
-    table.foreign('sip_id').references('id').inTable('sips').onDelete('cascade').onUpdate('cascade')
+    table.integer('glide_id').unsigned()
+    table.foreign('glide_id').references('id').inTable('glides').onDelete('cascade').onUpdate('cascade')
   })
 }
 

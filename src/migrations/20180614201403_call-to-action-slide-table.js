@@ -8,8 +8,8 @@ exports.up = (knex, Promise) => {
     table.string('image_url', 500)
     table.string('btn_text', 30)
     table.string('btn_link', 500)
-    table.integer('sip_id').unsigned()
-    table.foreign('sip_id').references('id').inTable('sips').onDelete('cascade').onUpdate('cascade')
+    table.integer('glide_id').unsigned()
+    table.foreign('glide_id').references('id').inTable('glides').onDelete('cascade').onUpdate('cascade')
   })
 }
 

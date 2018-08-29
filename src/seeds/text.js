@@ -9,19 +9,19 @@ exports.seed = (knex, Promise) => {
           id: 1,
           created_at: new Date(),
           text: 'text titre',
-          sip_id: 1
+          glide_id: 1
         },
         {
           id: 2,
           created_at: new Date(),
           text: 'text fdaf titre 2',
-          sip_id: 2
+          glide_id: 2
         },
         {
           id: 3,
           created_at: new Date(),
           text: 'fkenzlmrizoas titre 3',
-          sip_id: 1
+          glide_id: 1
         }
       ])
     })
