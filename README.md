@@ -2,10 +2,9 @@
 
 ## Server App
 
-[showing our app](https://gyazo.com/4ca7c3012a716fd291afe63f898e2714
-)
+![showing our app](https://i.imgur.com/RbMqT53.jpg)
 
-### A Product Hunt glides and Medium stories-like builder interface, for anyone on the web
+### A Medium stories-like builder interface, for anyone on the web
 
   📚 Tell engaging and fast-to-read, addictive tappable stories
 
