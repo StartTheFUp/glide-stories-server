@@ -22,7 +22,7 @@
 A Project by ⚡️Start the F Up ([www.startthefup.co](https://www.startthefup.co)), a commando innovation agency in Paris.
 
 
-* **V0** built for STFU by Wild Code School. Thanks to them and more personally to @lfoussat @Mchtira @Alex-bui @capucinel @PierreLGV @Kiitaan et leur formateur Clément @kigiri 🙌
+* **V0** built for STFU by Wild Code School. Thanks to them and more personally to @lfoussat(https://github.com/kigiri) @Mchtira(https://github.com/Mchtira) @Alex-bui(https://github.com/Alex-bui) @capucinel(https://github.com/capucinel) @PierreLGV(https://github.com/PierreLGV) @Kiitaan(https://github.com/Kiitaan) et leur formateur Clément [@kigiri](https://github.com/kigiri) 🙌
 
 
 
