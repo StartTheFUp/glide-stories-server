@@ -4,7 +4,8 @@
 
 ![showing our app](https://i.imgur.com/RbMqT53.jpg)
 
-### A Medium stories-like builder interface, for anyone on the web
+### A Medium stories-like builder interface, for web storytellers
+
 
   📚 Tell engaging and fast-to-read, addictive tappable stories
 
@@ -16,9 +17,14 @@
 
   🖥 Embed in your websites or share direct link.
 
+
+
 A Project by ⚡️ Start the F Up (wwww.startthefup.co), a commando Innovation agency in Paris.
 
-* V0 : version built by Wild Code School. Thanks to them and more personally to [insert your github refs here]
+
+* V0 : version built for STFU by Wild Code School. Thanks to them and more personally to @lfoussat, @Mchtira, @Alex-bui, @capucinel, @PierreLGV, @Kiitaan et leur formateur Clément @kigiri 🙌
+
+
 
 
 NO LICENSE DISCLAIMER
